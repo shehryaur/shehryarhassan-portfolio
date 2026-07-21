@@ -1,0 +1,305 @@
+export const site = {
+  name: "Shehryar",
+  fullName: "Shehryar Hassan",
+  role: "AI Product Manager",
+  roles: [
+    "AI Product Manager",
+    "Technical PM",
+    "Growth Engineer",
+    "Full-Stack Builder",
+    "Zero-to-One Operator",
+  ],
+  tagline: "Ship. Measure. Iterate.",
+  handle: "shehryaur",
+  location: "Pakistan",
+  avatar: "/avatar.jpg",
+  bio: {
+    intro:
+      "I turn fuzzy product hypotheses into shipped software, fast, measurable, and instrumented from day one.",
+    line2:
+      "shehryarhassan.ai is my personal site for the case studies, prototypes, and notes behind the work.",
+  },
+  socials: {
+    x: "https://x.com/shehryarhassan",
+    linkedin: "https://linkedin.com/in/shehryarhassan",
+    github: "https://github.com/shehryaur",
+    medium: "https://medium.com/@shehryarhassan",
+    instagram: "https://instagram.com/shehryarhassan",
+    rss: "/rss.xml",
+    email: "mailto:contact@shehryarhassan.me",
+    site: "https://shehryarhassan.ai",
+  },
+  githubStats: {
+    contributions: 1240,
+    handle: "shehryaur",
+  },
+};
+
+// -------- Currently Shipping (home cards) --------
+export type ShippingItem = {
+  name: string;
+  metric: string;
+  description: string;
+  liveUrl: string;
+  notesUrl?: string;
+};
+
+export const shipping: ShippingItem[] = [
+  {
+    name: "Seekho Platform v2",
+    metric: "0% timeout failures",
+    description:
+      "Async, event-driven curriculum engine for local educators. Inngest + Supabase.",
+    liveUrl: "https://github.com/shehryaur/Seekho-v2",
+    notesUrl: "/projects/seekho-v2",
+  },
+  {
+    name: "MUV",
+    metric: "Zero-friction acquisition",
+    description:
+      "Serverless campus carpool utility built natively inside Telegram.",
+    liveUrl: "https://github.com/shehryaur/muv",
+    notesUrl: "/projects/muv",
+  },
+  {
+    name: "Seekho v1.0",
+    metric: "MVP validation",
+    description:
+      "Streamlit prototype that validated curriculum-matching demand before v2.",
+    liveUrl: "https://github.com/shehryaur/Seekho-Platform-v1.0",
+    notesUrl: "/projects/seekho-v1",
+  },
+  {
+    name: "Forumcue",
+    metric: "Roadmap telemetry",
+    description:
+      "Semantic classifier that turns forum noise into a ranked product backlog.",
+    liveUrl: "#",
+    notesUrl: "/projects/forumcue",
+  },
+];
+
+// -------- Full Projects --------
+export type Project = {
+  slug: string;
+  name: string;
+  subtitle: string;              // "Role focus" line under the title
+  metric: string;
+  tagline: string;
+  description: string;           // card summary
+  longDescription: string;       // detail-page intro line
+  vision: string;                // one-line "Product Vision" quote for the modal
+  userProblem: string;           // "The User Problem" paragraph
+  decisions: string[];           // "Technical PM Decisions" bullets
+  impact: string[];              // "Product Impact" bullets
+  url: string;                   // primary link (usually the repo)
+  repo?: string;
+  stack: string[];               // tech badges
+  tags: string[];                // category tags (used for hover-color)
+  status: "active" | "beta" | "archived";
+  date: string;
+  featured?: boolean;
+  /** Screenshot / preview image shown inside the browser mock on the card + detail page. */
+  image: string;
+};
+
+export const projects: Project[] = [
+  {
+    slug: "seekho-v2",
+    name: "Seekho Platform v2",
+    subtitle: "Technical & AI Product Management",
+    metric: "0% timeout failures",
+    tagline: "Async curriculum engine for local educators",
+    description:
+      "An offline-first curriculum engine for local educators that eliminates API timeout failures with async event-driven delivery.",
+    longDescription:
+      "Turned a fragile lesson generator into a production-ready pipeline with responsive background workers and persistent state.",
+    vision:
+      "Scaling a localized educational generator from a fragile prototype into a production-grade enterprise application.",
+    userProblem:
+      "Processing large generative lesson plans caused massive latency. Standard API gateways kept dropping the connection during long compilation loops, and users abandoned the platform whenever the interface froze mid-generation.",
+    decisions: [
+      "Moved from synchronous requests to an asynchronous, event-driven pipeline using Inngest background workers.",
+      "Split long generation loops into siloed queues for syllabus mapping, AI content generation, automated remediation, and WhatsApp parent notifications.",
+      "Persisted intermediate state in Supabase so users can close the browser mid-run and return to a completed plan later.",
+    ],
+    impact: [
+      "Reduced processing failures to 0% by shifting heavy computation off the request thread.",
+      "Kept the UI fully interactive during long AI workloads, lifting retention through generation.",
+      "Wired automated WhatsApp hooks for scalable parent engagement and organic feedback loops.",
+    ],
+    url: "https://seekhopunjab.vercel.app/",
+    repo: "https://github.com/shehryaur/Seekho-v2",
+    stack: ["Next.js", "TypeScript", "Supabase", "Inngest", "Tailwind CSS", "LLMs"],
+    tags: ["AI", "Product", "EdTech"],
+    status: "active",
+    date: "2025-11-01",
+    featured: true,
+    image: "/seekho-v2.png",
+  },
+  {
+    slug: "muv",
+    name: "MUV",
+    subtitle: "Growth & Technical Product Management",
+    metric: "Zero acquisition cost",
+    tagline: "Serverless campus carpool inside Telegram",
+    description:
+      "A serverless carpool coordination tool built directly into Telegram, eliminating app friction and driving quick student adoption.",
+    longDescription:
+      "Built a zero-friction ride-sharing flow with native chat onboarding, webhook coordination, and automated cleanup.",
+    vision:
+      "Engineering a zero-friction distribution framework that uses pre-existing community chat ecosystems to maximize growth.",
+    userProblem:
+      "Campus ride-sharing was chaotic. Group chats buried ride availability within minutes, and a standalone mobile app presented far too much download friction for a quick, one-off utility.",
+    decisions: [
+      "Built a lightweight Telegram Mini-App so users run the utility natively inside their existing group chats.",
+      "Deployed modular serverless endpoints on Vercel for webhook, join, and share flows to process location and roster data.",
+      "Ran scheduled cron cleanup jobs to purge expired rides hourly and keep the marketplace accurate.",
+    ],
+    impact: [
+      "Bypassed traditional app-store conversion drop, unlocking rapid community onboarding.",
+      "Achieved organic scale with zero paid acquisition by embedding directly into active group chats.",
+      "Maintained high listing quality through automated cleanup, preventing marketplace decay and sustaining trust.",
+    ],
+    url: "https://muv-ten.vercel.app/",
+    repo: "https://github.com/shehryaur/muv",
+    stack: ["Node.js", "Vercel Serverless", "Telegram Bot API", "Cron"],
+    tags: ["Growth", "Serverless", "Community"],
+    status: "active",
+    date: "2025-06-15",
+    featured: true,
+    image: "/muv.png",
+  },
+  {
+    slug: "seekho-v1",
+    name: "Seekho v1.0 (MVP)",
+    subtitle: "Growth Product Strategy",
+    metric: "Validated in days",
+    tagline: "Streamlit demand-validation prototype",
+    description:
+      "A Streamlit demand-validation prototype that tested curriculum matching before investing in a full web platform.",
+    longDescription:
+      "Verified local educator demand quickly with a low-fidelity prototype, reducing early engineering risk and informing v2.",
+    vision:
+      "Deploying low-fidelity data prototypes to mitigate capital risk and verify baseline user demand parameters.",
+    userProblem:
+      "Educators needed custom learning materials mapped strictly to regional textbook boards. Committing significant engineering resources to a full web platform without concrete demand validation carried too much capital risk.",
+    decisions: [
+      "Shipped a rapid Streamlit prototype so real users could interact with the core loop within days.",
+      "Wired simple SQLite content parsers backed by a regional syllabus matrix to test prompt accuracy safely.",
+      "Locked scope to raw data validation with no auth, no state, and no polish to isolate the value hypothesis.",
+    ],
+    impact: [
+      "Verified the core product hypothesis in the market within days.",
+      "Captured clean interaction telemetry that justified scaling up to the v2 platform.",
+      "Saved weeks of upfront engineering that would have been sunk into an unvalidated frontend.",
+    ],
+    url: "https://seekho.streamlit.app/",
+    repo: "https://github.com/shehryaur/Seekho-Platform-v1.0",
+    stack: ["Python", "Streamlit", "SQLite", "OpenAI API"],
+    tags: ["MVP", "Validation", "Python"],
+    status: "archived",
+    date: "2025-02-10",
+    featured: true,
+    image: "/seekho-v1.png",
+  },
+  {
+    slug: "forumcue",
+    name: "Forumcue",
+    subtitle: "AI Product Management",
+    metric: "Roadmap telemetry",
+    tagline: "Semantic classifier for community backlogs",
+    description:
+      "Converts chaotic community forum text into structured product roadmaps. Uses automated vector pipelines to rank user feature requests quantitatively.",
+    longDescription:
+      "Using semantic classification systems to turn chaotic internet discussion threads into quantitative product roadmaps.",
+    vision:
+      "Using semantic classification systems to turn chaotic internet discussion threads into quantitative product roadmaps.",
+    userProblem:
+      "Product teams wasted hours crawling forums manually. Crucial bug reports and feature requests were lost in unstructured noise, and prioritisation defaulted to whoever shouted loudest.",
+    decisions: [
+      "Designed an automated ingestion pipeline that crawls active developer discussion hubs and normalises raw text.",
+      "Indexed entries in a vector database keyed by contextual product relevance for fast semantic lookup.",
+      "Deployed classification models that auto-tag threads to explicit engineering feature components.",
+    ],
+    impact: [
+      "Replaced subjective roadmap guesswork with concrete, quantitative user telemetry.",
+      "Surfaced high-frequency issues in real time so engineering could ship hotfixes faster.",
+      "Tracked sentiment shifts systematically, letting leadership target resources where demand was actually highest.",
+    ],
+    url: "#",
+    stack: ["Python", "Vector DBs", "Semantic Classification"],
+    tags: ["AI", "Analytics", "Product"],
+    status: "beta",
+    date: "2026-03-05",
+    featured: false,
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop",
+  },
+];
+
+// -------- Experience Timeline --------
+export type Experience = {
+  period: string;
+  role: string;
+  company: string;
+  highlights: string[];
+  stack: string[];
+};
+
+export const experience: Experience[] = [
+  {
+    period: "Apr 2026 to Present",
+    role: "Business Development Intern",
+    company: "Blackmont Consulting",
+    highlights: [
+      "Onboarded two startup clients and secured signed MOUs within 30 days.",
+      "Managed onboarding documentation and maintained accurate data records for all client proposals.",
+    ],
+    stack: ["Business Development", "Client Operations", "Process Documentation"],
+  },
+  {
+    period: "Jan 2026 to Apr 2026",
+    role: "Project Management Intern",
+    company: "Skill Craft Technologies",
+    highlights: [
+      "Analyzed Daraz against competitors like PriceOye to identify market gaps.",
+      "Proposed an Open Parcel Verification feature to fix trust issues and win back high-value buyers.",
+      "Built an async framework for distributed teams with a 12-hour time gap, eliminating midnight meetings.",
+    ],
+    stack: ["Product Strategy", "Market Research", "Team Operations"],
+  },
+  {
+    period: "June 2024 to Aug 2024",
+    role: "Retail Operations Intern",
+    company: "Tim Hortons",
+    highlights: [
+      "Found user friction points using customer feedback and sales data.",
+      "Redesigned the in-store journey in collaboration with the Head of Design.",
+      "Increased the Customer Satisfaction Score by 17 percent in two months.",
+    ],
+    stack: ["Retail Operations", "Customer Experience", "Data Analysis"],
+  },
+];
+
+// -------- Blogs --------
+export type Post = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readTime: string;
+  tags: string[];
+};
+
+export const posts: Post[] = [];
+
+// -------- Tools --------
+export type Tool = {
+  name: string;
+  category: string;
+  description: string;
+  url: string;
+};
+
+export const tools: Tool[] = [];
