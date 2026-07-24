@@ -1,4 +1,4 @@
-# amankumar.ai
+# shehryarhassan.me
 
 Personal portfolio — Next.js 14 App Router + TailwindCSS.
 

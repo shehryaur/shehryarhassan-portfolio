@@ -7,23 +7,19 @@ import AmbientLight from "@/components/AmbientLight";
 import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
-  title: "Shehryar Hassan - AI Engineer",
+  title: "Shehryar Hassan - Aspiring AI/Growth PM",
   description:
-    "Shehryar Hassan. AI Engineer. Founding Engineer at Kay AI. Building Promptsmint, AidenGPT, Gita Chat, niahere.",
-  metadataBase: new URL("https://shehryarhassan.ai"),
+    "Shehryar Hassan",
+  metadataBase: new URL("https://shehryarhassan.me"),
   openGraph: {
-    title: "Shehryar Hassan - AI Engineer",
+    title: "Shehryar Hassan - Aspiring AI/Growth PM",
     description:
-      "AI Engineer. Founding Engineer at Kay AI. Ships live AI products.",
-    url: "https://shehryarhassan.ai",
-    siteName: "shehryarhassan.ai",
+      "Aspiring AI/Growth PM",
+    url: "https://shehryarhassan.me",
+    siteName: "shehryarhassan.me",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Shehryar Hassan - AI Engineer",
-    creator: "@shehryarhassan",
-  },
+  
 };
 
 export default function RootLayout({

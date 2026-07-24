@@ -13,12 +13,7 @@ export const site = {
   handle: "shehryaur",
   location: "Pakistan",
   avatar: "/avatar.jpg",
-  bio: {
-    intro:
-      "I turn fuzzy product hypotheses into shipped software, fast, measurable, and instrumented from day one.",
-    line2:
-      "shehryarhassan.ai is my personal site for the case studies, prototypes, and notes behind the work.",
-  },
+  
   socials: {
     x: "https://x.com/shehryarhassan",
     linkedin: "https://linkedin.com/in/shehryar05",
