@@ -21,10 +21,9 @@ export const site = {
   },
   socials: {
     x: "https://x.com/shehryarhassan",
-    linkedin: "https://linkedin.com/in/shehryarhassan",
+    linkedin: "https://linkedin.com/in/shehryar05",
     github: "https://github.com/shehryaur",
-    medium: "https://medium.com/@shehryarhassan",
-    instagram: "https://instagram.com/shehryarhassan",
+    instagram: "https://instagram.com/shehryaur",
     rss: "/rss.xml",
     email: "mailto:contact@shehryarhassan.me",
     site: "https://shehryarhassan.ai",
