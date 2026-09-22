@@ -165,6 +165,72 @@ export const projects: Project[] = [
     image: "/muv.png",
   },
   {
+    slug: "reprosafe",
+    name: "ReproSafe",
+    subtitle: "AI Security & Technical Product Management",
+    metric: "Synthetic reproducers",
+    tagline: "Private bug isolation without raw data exposure",
+    description:
+      "A local AI security prototype that turns private Python data-processing bugs into reviewed synthetic reproducers before any AI-assisted patching.",
+    longDescription:
+      "Built a privacy-first workflow for isolating sensitive data failures, validating synthetic fixtures, and exporting minimal repro packages for safe review.",
+    vision:
+      "Helping teams debug private data pipelines without leaking the raw inputs that caused the failure.",
+    userProblem:
+      "Developers often need help reproducing production data bugs, but sending real fixtures or private code context to external tools can expose sensitive values and customer data.",
+    decisions: [
+      "Accepted a narrow Python module and JSON fixture through strict schemas so every run stays bounded and reviewable.",
+      "Executed cases in an isolated Wasmer worker with no inherited model key and no guest networking.",
+      "Generated deterministic synthetic replacements and executed every candidate before allowing export or optional AI patch review.",
+    ],
+    impact: [
+      "Reduced accidental data release risk by keeping raw private inputs local by default.",
+      "Turned fragile bug reports into portable repro packages with reviewed source, verifier code, and bounded metadata.",
+      "Bound AI request approval to provider, model, payload identity, and destination so review happens before transmission.",
+    ],
+    url: "https://github.com/shehryaur/reprosafe-demo",
+    repo: "https://github.com/shehryaur/reprosafe-demo",
+    stack: ["React", "TypeScript", "Vite", "Express", "Wasmer", "Gemini", "Anthropic"],
+    tags: ["AI Security", "Privacy", "Developer Tools"],
+    status: "beta",
+    date: "2026-09-19",
+    featured: true,
+    image: "/reprosafe.png",
+  },
+  {
+    slug: "chowkidaar",
+    name: "Chowkidaar",
+    subtitle: "AI Reliability & Agentic Engineering",
+    metric: "PR-ready fixes",
+    tagline: "Autonomous watchman for brittle API integrations",
+    description:
+      "An API reliability layer that maps external-service drift to affected code paths, proposes focused fixes, runs checks, and opens PR-ready review flows.",
+    longDescription:
+      "Built an always-on API maintenance agent that narrows provider drift, environment changes, and traffic pressure to the exact pipeline that needs attention.",
+    vision:
+      "Replacing surprise integration breakages with early detection, focused remediation, and human-reviewed pull requests.",
+    userProblem:
+      "API integrations usually fail after a provider changes behavior and a developer notices in production. Teams lose time tracing blast radius before they can even write the fix.",
+    decisions: [
+      "Mapped external API usage into a repository graph so the agent works on affected call paths instead of wandering the whole codebase.",
+      "Added simulations and live audits that score pressure, latency, failures, and recommended fixes before users feel an incident.",
+      "Designed the apply workflow to write the smallest safe patch, run project checks, and open a PR review flow without auto-merging.",
+    ],
+    impact: [
+      "Moves API maintenance from reactive debugging to proactive contract, environment, and traffic monitoring.",
+      "Keeps secrets safer by fingerprinting credentials locally instead of storing raw values.",
+      "Turns maintenance work into reviewable evidence: graph context, simulation output, validation checks, and a proposed branch.",
+    ],
+    url: "https://github.com/shehryaur/ChowkidaarAPI",
+    repo: "https://github.com/shehryaur/ChowkidaarAPI",
+    stack: ["FastAPI", "React", "Python", "TypeScript", "OpenAI", "GitHub PRs", "Graph Analysis"],
+    tags: ["AI Agents", "Reliability", "API Monitoring"],
+    status: "beta",
+    date: "2026-09-18",
+    featured: true,
+    image: "/chowkidaar.png",
+  },
+  {
     slug: "seekho-v1",
     name: "Seekho v1.0 (MVP)",
     subtitle: "Growth Product Strategy",
