@@ -40,10 +40,10 @@ export type ShippingItem = {
 
 export const shipping: ShippingItem[] = [
   {
-    name: "Seekho Platform v2",
-    metric: "0% timeout failures",
+    name: "Seekho Platform",
+    metric: "MVP to 0% timeout failures",
     description:
-      "Async, event-driven curriculum engine for local educators. Inngest + Supabase.",
+      "Validated with a Streamlit MVP, then rebuilt as an async curriculum engine for local educators.",
     liveUrl: "https://github.com/shehryaur/Seekho-v2",
     notesUrl: "/projects/seekho-v2",
   },
@@ -54,14 +54,6 @@ export const shipping: ShippingItem[] = [
       "Serverless campus carpool utility built natively inside Telegram.",
     liveUrl: "https://github.com/shehryaur/muv",
     notesUrl: "/projects/muv",
-  },
-  {
-    name: "Seekho v1.0",
-    metric: "MVP validation",
-    description:
-      "Streamlit prototype that validated curriculum-matching demand before v2.",
-    liveUrl: "https://github.com/shehryaur/Seekho-Platform-v1.0",
-    notesUrl: "/projects/seekho-v1",
   },
   {
     name: "Forumcue",
@@ -100,32 +92,32 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "seekho-v2",
-    name: "Seekho Platform v2",
-    subtitle: "Technical & AI Product Management",
-    metric: "0% timeout failures",
-    tagline: "Async curriculum engine for local educators",
+    name: "Seekho Platform",
+    subtitle: "AI Product Strategy & Technical Product Management",
+    metric: "MVP to 0% timeout failures",
+    tagline: "Validated curriculum matching, then rebuilt for production",
     description:
-      "An offline-first curriculum engine for local educators that eliminates API timeout failures with async event-driven delivery.",
+      "A local educator platform that moved from a Streamlit demand-validation MVP to an offline-first, async curriculum engine with reliable AI delivery.",
     longDescription:
-      "Turned a fragile lesson generator into a production-ready pipeline with responsive background workers and persistent state.",
+      "Validated regional curriculum-matching demand quickly, then turned the fragile lesson generator into a production-ready pipeline with background workers and persistent state.",
     vision:
-      "Scaling a localized educational generator from a fragile prototype into a production-grade enterprise application.",
+      "Scaling a localized educational generator from a low-fidelity validation prototype into a production-grade learning platform.",
     userProblem:
-      "Processing large generative lesson plans caused massive latency. Standard API gateways kept dropping the connection during long compilation loops, and users abandoned the platform whenever the interface froze mid-generation.",
+      "Educators needed custom learning materials mapped to regional textbook boards, but the idea first needed demand validation. Once validated, large generative lesson plans created a second problem: long compilation loops froze the interface and caused standard API gateways to drop requests.",
     decisions: [
-      "Moved from synchronous requests to an asynchronous, event-driven pipeline using Inngest background workers.",
-      "Split long generation loops into siloed queues for syllabus mapping, AI content generation, automated remediation, and WhatsApp parent notifications.",
+      "Shipped a rapid Streamlit MVP with SQLite content parsing to test curriculum-matching demand before investing in the full platform.",
+      "Rebuilt the validated loop in Next.js and Supabase, then moved long generation work into an asynchronous, event-driven pipeline using Inngest background workers.",
       "Persisted intermediate state in Supabase so users can close the browser mid-run and return to a completed plan later.",
     ],
     impact: [
+      "Validated the core product hypothesis in days and used the interaction signal to justify scaling from MVP to v2.",
       "Reduced processing failures to 0% by shifting heavy computation off the request thread.",
       "Kept the UI fully interactive during long AI workloads, lifting retention through generation.",
-      "Wired automated WhatsApp hooks for scalable parent engagement and organic feedback loops.",
     ],
     url: "https://seekhopunjab.vercel.app/",
     repo: "https://github.com/shehryaur/Seekho-v2",
-    stack: ["Next.js", "TypeScript", "Supabase", "Inngest", "Tailwind CSS", "LLMs"],
-    tags: ["AI", "Product", "EdTech"],
+    stack: ["Next.js", "TypeScript", "Supabase", "Inngest", "Streamlit", "Python", "LLMs"],
+    tags: ["AI", "Product", "EdTech", "MVP"],
     status: "active",
     date: "2025-11-01",
     featured: true,
@@ -229,39 +221,6 @@ export const projects: Project[] = [
     date: "2026-09-18",
     featured: true,
     image: "/chowkidaar.png",
-  },
-  {
-    slug: "seekho-v1",
-    name: "Seekho v1.0 (MVP)",
-    subtitle: "Growth Product Strategy",
-    metric: "Validated in days",
-    tagline: "Streamlit demand-validation prototype",
-    description:
-      "A Streamlit demand-validation prototype that tested curriculum matching before investing in a full web platform.",
-    longDescription:
-      "Verified local educator demand quickly with a low-fidelity prototype, reducing early engineering risk and informing v2.",
-    vision:
-      "Deploying low-fidelity data prototypes to mitigate capital risk and verify baseline user demand parameters.",
-    userProblem:
-      "Educators needed custom learning materials mapped strictly to regional textbook boards. Committing significant engineering resources to a full web platform without concrete demand validation carried too much capital risk.",
-    decisions: [
-      "Shipped a rapid Streamlit prototype so real users could interact with the core loop within days.",
-      "Wired simple SQLite content parsers backed by a regional syllabus matrix to test prompt accuracy safely.",
-      "Locked scope to raw data validation with no auth, no state, and no polish to isolate the value hypothesis.",
-    ],
-    impact: [
-      "Verified the core product hypothesis in the market within days.",
-      "Captured clean interaction telemetry that justified scaling up to the v2 platform.",
-      "Saved weeks of upfront engineering that would have been sunk into an unvalidated frontend.",
-    ],
-    url: "https://seekho.streamlit.app/",
-    repo: "https://github.com/shehryaur/Seekho-Platform-v1.0",
-    stack: ["Python", "Streamlit", "SQLite", "OpenAI API"],
-    tags: ["MVP", "Validation", "Python"],
-    status: "archived",
-    date: "2025-02-10",
-    featured: true,
-    image: "/seekho-v1.png",
   },
   {
     slug: "forumcue",

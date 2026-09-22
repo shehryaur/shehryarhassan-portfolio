@@ -6,6 +6,11 @@ export type HighlightItem = {
   oneLiner: string;
   summary: string;
   details: string[];
+  pdfs?: {
+    title: string;
+    description: string;
+    href: string;
+  }[];
 };
 
 export const highlights: HighlightItem[] = [
@@ -22,6 +27,18 @@ export const highlights: HighlightItem[] = [
       "Defined activation metrics and user-declared interaction modes.",
       "Engineered a behavioral-signal retention mechanism called Active-Shift logic.",
       "Authored the feature sequencing logic for a three-part product launch.",
+    ],
+    pdfs: [
+      {
+        title: "Original Adobe Delivery",
+        description: "Full delivered PDF for the Adobe AI product strategy project.",
+        href: "/adobe-ai-product-strategy-original.pdf",
+      },
+      {
+        title: "PRD Summary",
+        description: "Problem, users, solution, and TPM relationship summary.",
+        href: "/adobe-ai-product-summary-prd.pdf",
+      },
     ],
   },
   {

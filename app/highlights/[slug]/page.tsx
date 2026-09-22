@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { highlights } from "@/lib/highlights";
+import { FileText } from "lucide-react";
 
 export const metadata = { title: "Highlight - Shehryar Hassan" };
 
@@ -33,6 +34,35 @@ export default function HighlightDetailPage({ params }: { params: { slug: string
             </li>
           ))}
         </ul>
+
+        {highlight.pdfs && highlight.pdfs.length > 0 && (
+          <div className="mt-8 border-t border-line pt-6">
+            <h2 className="text-[18px] font-semibold text-ink">Project PDFs</h2>
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              {highlight.pdfs.map((pdf) => (
+                <a
+                  key={pdf.href}
+                  href={pdf.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-start gap-3 rounded-lg border border-line bg-white p-4 transition-colors hover:bg-subtle"
+                >
+                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink text-white">
+                    <FileText size={17} />
+                  </span>
+                  <span>
+                    <span className="block text-[14px] font-semibold text-ink">
+                      {pdf.title}
+                    </span>
+                    <span className="mt-1 block text-[13px] leading-relaxed text-mute">
+                      {pdf.description}
+                    </span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );
