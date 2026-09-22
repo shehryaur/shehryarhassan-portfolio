@@ -51,7 +51,10 @@ export default function HomePage() {
           <div className="mt-8 space-y-4 text-[15px] leading-[1.8] text-ink/90">
             <p>I build AI products, data systems, and finance-aware automation.</p>
             <p>
-              I&apos;m an undergraduate at Minerva University studying Data &amp; AI with Strategic Finance.
+              I&apos;m an undergraduate at Minerva University studying{" "}
+              <span className="block pt-2 text-[23px] font-bold leading-tight text-ink md:text-[28px]">
+                Data &amp; AI <span className="text-ink/55">with</span> Strategic Finance.
+              </span>
               My work sits at the intersection of product strategy, machine learning, business models, and capital-efficient growth.
             </p>
           </div>
