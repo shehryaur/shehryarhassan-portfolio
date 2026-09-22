@@ -56,17 +56,6 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-7 flex flex-wrap gap-2">
-            {["Data & AI", "Product Strategy", "Strategic Finance"].map((focus) => (
-              <span
-                key={focus}
-                className="rounded-full border border-line bg-white px-3.5 py-2 text-[13px] font-medium text-ink shadow-sm"
-              >
-                {focus}
-              </span>
-            ))}
-          </div>
-
           <div className="mt-7 text-[14px] font-medium text-ink/70">
             Minerva rotation:{' '}
             <span className="text-black">(</span>
