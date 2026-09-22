@@ -47,19 +47,28 @@ export default function HomePage() {
           <h1 className="text-[44px] font-bold leading-[1.05] tracking-tight text-ink md:text-[56px]">
             Hey, I&apos;m Shehryar
           </h1>
-          
-
           {/* Bio block */}
           <div className="mt-8 space-y-4 text-[15px] leading-[1.8] text-ink/90">
-            <p>I build digital products and automated systems.</p>
+            <p>I build AI products, data systems, and finance-aware automation.</p>
             <p>
-              I am an undergraduate student at Minerva University. I study Computational Sciences and Business.
-              My academic focus is on Artificial Intelligence and New Business Ventures.
+              I&apos;m an undergraduate at Minerva University studying Data &amp; AI with Strategic Finance.
+              My work sits at the intersection of product strategy, machine learning, business models, and capital-efficient growth.
             </p>
           </div>
 
-          <div className="mt-6 text-[20px] font-semibold text-black md:text-[24px]">
-            At Minerva, I&apos;ll study in{' '}
+          <div className="mt-7 flex flex-wrap gap-2">
+            {["Data & AI", "Product Strategy", "Strategic Finance"].map((focus) => (
+              <span
+                key={focus}
+                className="rounded-full border border-line bg-white px-3.5 py-2 text-[13px] font-medium text-ink shadow-sm"
+              >
+                {focus}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-7 text-[14px] font-medium text-ink/70">
+            Minerva rotation:{' '}
             <span className="text-black">(</span>
             <WordRotate
               items={[

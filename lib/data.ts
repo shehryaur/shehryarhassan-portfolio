@@ -3,10 +3,10 @@ export const site = {
   fullName: "Shehryar Hassan",
   role: "AI Product Manager",
   roles: [
+    "Data & AI Builder",
     "AI Product Manager",
+    "Strategic Finance Thinker",
     "Technical PM",
-    "Growth Engineer",
-    "Full-Stack Builder",
     "Zero-to-One Operator",
   ],
   tagline: "Ship. Measure. Iterate.",
