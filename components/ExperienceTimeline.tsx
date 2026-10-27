@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { FileText } from "lucide-react";
 import { experience } from "@/lib/data";
 
 /**
@@ -56,7 +57,7 @@ export default function ExperienceTimeline() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="relative mt-10">
+    <div ref={wrapRef} className="relative">
       <div className="space-y-14">
         {experience.map((e, i) => (
           <div
@@ -64,12 +65,16 @@ export default function ExperienceTimeline() {
             ref={(el) => {
               rowRefs.current[i] = el;
             }}
-            className="grid grid-cols-1 gap-4 md:grid-cols-[170px_24px_1fr] md:gap-6"
+            className="rise grid grid-cols-1 gap-4 md:grid-cols-[170px_24px_1fr] md:gap-6"
+            style={{ ["--i" as string]: i }}
           >
             {/* Date column */}
             <div className="md:pt-1 md:text-right">
-              <div className="text-[13px] leading-snug text-mute">
+              <div className="hand text-[19px] leading-tight text-ink/70">
                 {e.period}
+              </div>
+              <div className="mt-0.5 text-[12px] leading-snug text-soft">
+                {e.location}
               </div>
             </div>
 
@@ -101,12 +106,16 @@ export default function ExperienceTimeline() {
               />
             </div>
 
-            {/* Body */}
-            <div>
+            {/* Body: a taped paper card, alternating tilt, straightens on hover */}
+            <div
+              className="paper tape tilt rounded-sm px-5 pb-5 pt-6"
+              style={{ ["--tilt" as string]: i % 2 ? "0.6deg" : "-0.6deg" }}
+            >
               <h3 className="text-[17px] font-semibold text-ink">
                 {e.role}{" "}
                 <span className="text-mute">· {e.company}</span>
               </h3>
+              <p className="mt-0.5 text-[12.5px] text-mute">{e.about}</p>
               <ul className="mt-3 space-y-1.5 text-[13.5px] text-ink/80">
                 {e.highlights.map((h, j) => (
                   <li key={j} className="flex gap-2">
@@ -122,6 +131,21 @@ export default function ExperienceTimeline() {
                   </span>
                 ))}
               </div>
+              {e.links && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {e.links.map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-3 py-1.5 text-[12.5px] font-medium text-ink hover:bg-subtle"
+                    >
+                      <FileText size={12.5} /> {l.label}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}
