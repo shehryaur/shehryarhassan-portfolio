@@ -33,7 +33,7 @@ export default function MobileTopBar() {
         <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold leading-tight text-ink">{site.name}</div>
           <div className="text-[11px] text-mute">
-            {site.roles[0]}
+            {site.role}
           </div>
         </div>
       </div>
