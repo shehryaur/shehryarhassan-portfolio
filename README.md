@@ -1,53 +1,46 @@
 # shehryarhassan.me
 
-Personal portfolio for Shehryar Hassan, built with Next.js 14 App Router and Tailwind CSS. The site collects projects, experience, writing, tools, and contact information in one fast, maintainable codebase.
+Personal portfolio for Shehryar Hassan, built with Next.js 14 (App Router) and Tailwind CSS, deployed on Vercel.
 
-## Highlights
+## Pages
 
-- App Router structure with dedicated pages for home, projects, experience, blogs, about, tools, and contact.
-- Centralized content in `lib/data.ts` for easier updates.
-- Reusable UI components for navigation, cards, timelines, and contribution-style sections.
-- Responsive layout with desktop sidebar and mobile top navigation.
-- Deployed at `shehryarhassan.me`.
-
-## Tech Stack
-
-| Layer | Choice |
+| Route | What it shows |
 | --- | --- |
-| Framework | Next.js 14 |
-| Styling | Tailwind CSS |
-| Language | TypeScript |
-| Deployment | Vercel |
+| `/` | Intro, photo with highlight polaroids, and a "catch me" robot that shares recent wins |
+| `/projects` | Projects filterable by tech stack; the arrow opens details inline |
+| `/highlights` | Leadership, research and awards, with inline details |
+| `/experience` | Roles as a timeline of paper cards |
+| `/contact` | Contact form (Web3Forms) |
+
+Old URLs such as `/projects/<slug>`, `/highlights/<slug>`, `/about`, `/blogs` and `/tools` redirect (see `next.config.mjs`).
 
 ## Structure
 
 ```text
 app/          Routes and pages
-components/   Sidebar, mobile nav, cards, timeline, ambient UI pieces
-lib/data.ts   Portfolio content source of truth
-public/       Static assets
+components/   Sidebar, mobile nav, project and highlight lists, timeline, home collage, robot, cursor
+lib/data.ts   Profile, projects, skill filters and experience
+lib/highlights.ts   Highlights
+public/       Photo, project screenshots, highlight images, PDFs
 ```
 
-## Run Locally
+## Updating content
+
+- **Projects:** add an entry to `projects` in `lib/data.ts`. Its `skills` drive the filter; to show a skill as a filter, add it to `skillGroups`.
+- **Experience:** edit `experience` in `lib/data.ts`.
+- **Highlights:** edit `lib/highlights.ts` (`shortTitle` is the handwritten polaroid caption on Home).
+- **Recent wins in the robot's note:** edit `recently` in `components/RecentlyBot.tsx`.
+
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build and start:
+Production build:
 
 ```bash
 npm run build
 npm start
 ```
-
-## Content Updates
-
-Most visible portfolio content should be updated in:
-
-```text
-lib/data.ts
-```
-
-Use that file for project entries, experience items, links, and display copy so the rest of the interface can stay component-driven.
