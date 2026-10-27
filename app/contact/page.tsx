@@ -51,12 +51,14 @@ export default function ContactPage() {
 
   return (
     <div>
-      <h1 className="text-[40px] font-bold leading-tight tracking-tight text-ink md:text-[48px]">
-        Contact
-      </h1>
-      <p className="mt-2 text-[24px] text-mute">Got a project? Let's talk.</p>
+      <p className="hand rise text-[30px] leading-tight text-ink/70">Write me a note.</p>
 
-      <form onSubmit={onSubmit} className="mt-8 space-y-6 max-w-2xl">
+      {/* The form sits on a taped paper note */}
+      <form
+        onSubmit={onSubmit}
+        className="paper tape tilt rise mt-10 max-w-2xl space-y-6 rounded-sm px-6 pb-7 pt-8"
+        style={{ ["--tilt" as string]: "-0.4deg", ["--i" as string]: 2 }}
+      >
         <div>
           <label className="block text-sm font-medium text-ink">Name</label>
           <input

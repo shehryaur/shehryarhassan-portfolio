@@ -35,31 +35,6 @@ body {
 ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
 
-/* Highlighted title selection-look (as in "Hey, I'm Shehryar") */
-.hilite {
-  background: #e5e5e4;
-  padding: 2px 6px;
-  border-radius: 3px;
-  display: inline-block;
-}
-
-/* Underlined inline links used in bio */
-.ulink {
-  color: #0a0a0a;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  text-decoration-color: #9ca3af;
-}
-.ulink:hover { text-decoration-color: #0a0a0a; }
-
-/* Tiny mono meta chip in project cards */
-.meta-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 11px;
-  color: #6b7280;
-}
-
 /* Tag chip */
 .chip {
   display: inline-flex; align-items: center;
@@ -72,51 +47,6 @@ body {
   background: #0a0a0a; color: #fff; border-color: #0a0a0a;
 }
 .chip-solid:hover { opacity: 0.9; }
-.chip-success {
-  background: #dcfce7; color: #166534; border-color: #bbf7d0;
-}
-
-/* ============================================================
-   Cards — soft warm neutral, colored hover glow (kept for the
-   "Currently shipping" section on the home page).
-   ============================================================ */
-.card {
-  background: #f0efed;
-  border: 1px solid #e5e4e2;
-  border-radius: 12px;
-  transition: background .18s ease, border-color .18s ease,
-              transform .18s ease, box-shadow .25s ease;
-  position: relative;
-}
-.card:hover {
-  background: #ecebe8;
-  border-color: #d6d3d1;
-}
-.card-tint {
-  --hover-tint: #f3f4f6;
-}
-.card-tint:hover {
-  background: var(--hover-tint);
-  border-color: color-mix(in srgb, var(--hover-tint) 55%, #b8b6b1);
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.03),
-    0 12px 28px -14px color-mix(in srgb, var(--hover-tint) 70%, #94a3b8);
-  transform: translateY(-1px);
-}
-
-/* Fake browser chrome */
-.browser {
-  background: #fff;
-  border: 1px solid #e5e4e2;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.browser-bar {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 10px; border-bottom: 1px solid #eeedec;
-  background: #fafaf9;
-}
-.browser-bar .dot { width: 8px; height: 8px; border-radius: 50%; }
 
 /* ============================================================
    Ambient light — soft moving orbs behind everything
@@ -200,119 +130,145 @@ body {
   background: #0a0a0a;
 }
 
-/* Line-clamp helper (tailwind plugin free) */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 
 /* ============================================================
-   Typewriter caret used by <Typewriter />
+   Cursor: native CSS cursor (drawn by the OS, so it never lags).
+   Black arrowhead normally, black dot over clickable things.
+   A thin white outline keeps it visible on dark buttons.
+   <DirectionalCursor /> swaps --cursor-arrow to aim it along the motion;
+   the url() below is the fallback before the first mouse move.
    ============================================================ */
-.tw-caret {
-  display: inline-block;
-  width: 1px;
-  height: 0.95em;
-  margin-left: 2px;
-  vertical-align: -2px;
-  background: currentColor;
-  animation: tw-blink 1s steps(2, start) infinite;
+html, body {
+  cursor: var(--cursor-arrow, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath transform='rotate(-35 12 12)' d='M12 2 L20 22 L12 17 L4 22 Z' fill='%230a0a0a' stroke='white' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto);
 }
-@keyframes tw-blink {
-  to { visibility: hidden; }
+a, button, [role='button'], label, summary, select, .cursor-pointer {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Ccircle cx='11' cy='11' r='9' fill='%230a0a0a' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 11 11, pointer;
 }
+input[type='text'], input[type='email'], textarea { cursor: text; }
 
 /* ============================================================
-   Custom cursor (arrowhead + trail).
-   Native cursor is hidden site-wide; touch devices get it back.
+   Paper theme: tactile accents shared across tabs
+   (polaroids on Home, taped notes, highlighter, rise-in motion)
    ============================================================ */
-@media (pointer: fine) {
-  html, body, * { cursor: none !important; }
+.hand { font-family: var(--font-hand), cursive; font-weight: 600; }
+
+/* Off-white paper with a soft, warm drop shadow */
+.paper {
+  background: #fdfcf8;
+  box-shadow:
+    0 10px 24px -8px rgba(30, 25, 15, 0.28),
+    0 2px 4px rgba(30, 25, 15, 0.08);
 }
 
-.cursor-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 100;
-  overflow: hidden;
-}
-.cursor-main,
-.cursor-ghost {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 18px;
-  height: 18px;
-  margin-left: -9px;   /* center the SVG on the pointer */
-  margin-top: -9px;
-  will-change: transform, opacity;
-  transform: translate3d(-100px, -100px, 0);
-  mix-blend-mode: difference;   /* inverts against whatever's behind */
-}
-.cursor-main svg,
-.cursor-ghost svg {
-  display: block;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
-}
-.cursor-main.is-hover {
-  width: 22px;
-  height: 22px;
-  margin-left: -11px;
-  margin-top: -11px;
-  transition: width 0.18s ease, height 0.18s ease, margin 0.18s ease;
-}
-.cursor-main.is-hover::after {
+/* A strip of tape across the top edge (needs position: relative) */
+.tape { position: relative; }
+.tape::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background: #000;
-  mix-blend-mode: normal;
-}
-.cursor-main.is-hover svg {
-  opacity: 0;
-  transform: scale(0.5);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 20px;
+  transform: translateX(-50%) rotate(var(--tape-tilt, -3deg));
+  background: var(--tape-color, rgba(254, 243, 199, 0.85));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-@media (pointer: coarse) {
-  .cursor-layer { display: none; }
+/* Slight tilt that straightens on hover */
+.tilt {
+  transform: rotate(var(--tilt, -0.6deg));
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease;
+}
+.tilt:hover { transform: rotate(0deg) translateY(-2px); }
+
+/* Yellow highlighter swipe behind text */
+.marker {
+  background: linear-gradient(transparent 55%, #fde68a 55%, #fde68a 90%, transparent 90%);
+  border-radius: 2px;
 }
 
-@media print {
-  .cursor-layer { display: none; }
+/* Rows rise in one after another; set --i on each row for the stagger */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise .5s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Opened details unfold gently */
+@keyframes unfold {
+  from { opacity: 0; transform: translateY(-6px) rotate(var(--tilt, -0.6deg)); }
+  to   { opacity: 1; transform: rotate(var(--tilt, -0.6deg)); }
+}
+/* "backwards" so the hover straighten still works once the unfold has finished */
+.unfold { animation: unfold .35s cubic-bezier(.2, .7, .2, 1) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .unfold { animation: none; }
+  .tilt, .tilt:hover { transition: none; }
 }
 
 /* ============================================================
-   Project card — smoother lift + subtle glow on hover
+   "Catch me" paper robot on Home (components/RecentlyBot.tsx)
    ============================================================ */
-.card.card-tint {
-  transition:
-    background-color .25s ease,
-    border-color .25s ease,
-    transform .25s ease,
-    box-shadow .3s ease;
+/* Wander path; bot-face below flips it in sync (right for 0-40%, left after) */
+@keyframes bot-wander {
+  0%   { left: 0%;  top: 40%; }
+  20%  { left: 40%; top: 22%; }
+  40%  { left: 78%; top: 55%; }
+  60%  { left: 55%; top: 64%; }
+  80%  { left: 20%; top: 58%; }
+  100% { left: 0%;  top: 40%; }
+}
+.bot-wander { animation: bot-wander 16s ease-in-out infinite; }
+
+@keyframes bot-face {
+  0%, 39.9% { transform: scaleX(1); }
+  40%, 100% { transform: scaleX(-1); }
+}
+.bot-face { animation: bot-face 16s step-end infinite; }
+
+/* Legs swing alternately while walking */
+.bot-leg-l, .bot-leg-r { transform-box: fill-box; transform-origin: 50% 0%; }
+@keyframes bot-step {
+  from { transform: rotate(14deg); }
+  to   { transform: rotate(-14deg); }
+}
+.bot-leg-l { animation: bot-step .45s ease-in-out infinite alternate; }
+.bot-leg-r { animation: bot-step .45s ease-in-out infinite alternate-reverse; }
+
+/* Blink every few seconds */
+.bot-eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: bot-blink 4s infinite; }
+@keyframes bot-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.1); }
 }
 
-.card.card-tint:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 18px 40px -18px color-mix(in srgb, var(--hover-tint) 80%, #64748b);
+/* Antenna wobbles from its base */
+.bot-antenna { transform-box: view-box; transform-origin: 32px 15px; animation: bot-antenna 1.6s ease-in-out infinite alternate; }
+@keyframes bot-antenna {
+  from { transform: rotate(-9deg); }
+  to   { transform: rotate(9deg); }
 }
 
-/* Colored project name — smooth gradient fade on hover */
-.project-name {
-  background-image: none;
-  -webkit-background-clip: text;
-  background-clip: text;
-  transition: color .25s ease, background-image .25s ease;
+/* Caught: both arms up, waving from the shoulders */
+.bot-arm-wave-l { transform-box: view-box; transform-origin: 18px 50px; animation: bot-wave-l .5s ease-in-out infinite alternate; }
+.bot-arm-wave-r { transform-box: view-box; transform-origin: 46px 50px; animation: bot-wave-r .5s ease-in-out infinite alternate; }
+@keyframes bot-wave-l { from { transform: rotate(88deg); }  to { transform: rotate(112deg); } }
+@keyframes bot-wave-r { from { transform: rotate(-88deg); } to { transform: rotate(-112deg); } }
+
+/* Nervous wiggle when hovered */
+.bot-wiggle { animation: bot-wiggle .3s ease-in-out infinite alternate; }
+@keyframes bot-wiggle {
+  from { transform: rotate(-6deg); }
+  to   { transform: rotate(6deg); }
 }
 
-.project-name:hover {
-  text-decoration: none;
+@media (prefers-reduced-motion: reduce) {
+  .bot-wander, .bot-face, .bot-leg-l, .bot-leg-r, .bot-eyes,
+  .bot-antenna, .bot-wiggle { animation: none; }
+  .bot-arm-wave-l { animation: none; transform: rotate(100deg); }
+  .bot-arm-wave-r { animation: none; transform: rotate(-100deg); }
 }

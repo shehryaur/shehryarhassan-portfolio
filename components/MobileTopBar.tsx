@@ -3,15 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/data";
-import Typewriter from "@/components/Typewriter";
 
 const nav = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
   { href: "/highlights", label: "Highlights" },
   { href: "/experience", label: "Experience" },
-  { href: "/blogs", label: "Blogs" },
-  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -25,7 +22,7 @@ export default function MobileTopBar() {
           <img
             src={site.avatar}
             alt={site.fullName}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-[50%_20%]"
             onError={(e) => {
               const img = e.currentTarget;
               img.onerror = null;
@@ -36,7 +33,7 @@ export default function MobileTopBar() {
         <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold leading-tight text-ink">{site.name}</div>
           <div className="text-[11px] text-mute">
-            <Typewriter words={site.roles} />
+            {site.role}
           </div>
         </div>
       </div>
