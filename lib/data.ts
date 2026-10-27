@@ -1,14 +1,7 @@
 export const site = {
   name: "Shehryar",
   fullName: "Shehryar Hassan",
-  roles: [
-    "AI Product Builder",
-    "Technical PM",
-    "Forward Deployed Engineer",
-    "Full-Stack Developer",
-  ],
-  handle: "shehryaur",
-  location: "San Francisco, CA",
+  role: "AI Product Builder",
   avatar: "/avatar.webp",
 
   socials: {
@@ -19,7 +12,7 @@ export const site = {
   },
 };
 
-// -------- Projects (shown as a filterable timeline on /projects) --------
+// -------- Projects (filterable list on /projects) --------
 export type Project = {
   slug: string;
   name: string;
