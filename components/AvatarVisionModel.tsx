@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { site } from "@/lib/data";
 
-export default function AvatarVisionModel() {
+export default function AvatarVisionModel({ className = "h-72 w-72" }: { className?: string }) {
   const [isHovered, setIsHovered] = useState(false);
   const [confidence, setConfidence] = useState(0.14);
 
@@ -31,7 +31,7 @@ export default function AvatarVisionModel() {
 
   return (
     <div
-      className="relative h-72 w-72 cursor-crosshair group"
+      className={`relative ${className} cursor-crosshair group`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -41,7 +41,7 @@ export default function AvatarVisionModel() {
         <img
           src={site.avatar}
           alt={site.fullName}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0"
+          className="w-full h-full object-cover object-[50%_20%] transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0"
         />
       </div>
 
@@ -56,7 +56,7 @@ export default function AvatarVisionModel() {
             isHovered ? "opacity-100" : "opacity-0"
           }`}
         >
-          {`OBJ: TPM_LEAD`}
+          {`OBJ: AI_PRODUCT_BUILDER`}
         </div>
 
         <div
