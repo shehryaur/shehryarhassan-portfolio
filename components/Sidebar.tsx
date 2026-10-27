@@ -49,7 +49,7 @@ export default function Sidebar() {
             {site.name}
           </div>
           <div className="mt-0.5 truncate text-[13px] text-mute">
-            {site.roles[0]}
+            {site.role}
           </div>
         </div>
       </div>
