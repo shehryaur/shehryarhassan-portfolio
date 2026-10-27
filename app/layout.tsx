@@ -21,8 +21,10 @@ export const metadata: Metadata = {
     url: "https://shehryarhassan.me",
     siteName: "shehryarhassan.me",
     type: "website",
+    // Shown when the link is shared (LinkedIn, Slack, iMessage)
+    images: [{ url: "/avatar.webp", width: 896, height: 1152, alt: "Shehryar Hassan" }],
   },
-  
+  twitter: { card: "summary", images: ["/avatar.webp"] },
 };
 
 export default function RootLayout({
