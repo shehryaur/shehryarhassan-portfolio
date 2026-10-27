@@ -6,38 +6,31 @@ import {
   Home,
   Navigation,
   BarChart3,
-  Pencil,
-  UserCircle2,
-  Wrench,
   Mail,
   Linkedin,
   Github,
   Instagram,
   Star,
 } from "lucide-react";
-import { site, projects } from "@/lib/data";
-import Typewriter from "@/components/Typewriter";
+import { site } from "@/lib/data";
 
 const nav = [
   { href: "/", label: "Home", icon: Home },
   { href: "/projects", label: "Projects", icon: Navigation },
   { href: "/highlights", label: "Highlights", icon: Star },
   { href: "/experience", label: "Experience", icon: BarChart3 },
-  { href: "/blogs", label: "Blogs", icon: Pencil },
-
   { href: "/contact", label: "Contact", icon: Mail },
 ];
 
 const connect = [
   { href: site.socials.email, label: "Email", icon: Mail },
   { href: site.socials.linkedin, label: "LinkedIn", icon: Linkedin },
-  { href: site.socials.github, label: "Github", icon: Github },
+  { href: site.socials.github, label: "GitHub", icon: Github },
   { href: site.socials.instagram, label: "Instagram", icon: Instagram },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const onProjects = pathname.startsWith("/projects");
 
   return (
     <aside className="fixed left-0 top-0 z-30 hidden h-screen w-[300px] flex-col border-r border-line bg-page/80 px-5 py-7 backdrop-blur-sm md:flex">
@@ -48,12 +41,7 @@ export default function Sidebar() {
           <img
             src={site.avatar}
             alt={site.fullName}
-            className="h-full w-full object-cover"
-            onError={(e) => {
-              const img = e.currentTarget;
-              img.onerror = null;
-              img.src = "https://api.dicebear.com/9.x/notionists/svg?seed=shehryar&backgroundColor=e8d5b7";
-            }}
+            className="h-full w-full object-cover object-[50%_20%]"
           />
         </div>
         <div className="min-w-0">
@@ -61,12 +49,12 @@ export default function Sidebar() {
             {site.name}
           </div>
           <div className="mt-0.5 truncate text-[13px] text-mute">
-            <Typewriter words={site.roles} />
+            {site.roles[0]}
           </div>
         </div>
       </div>
 
-      {/* Nav (scrollable so long project list still fits) */}
+      {/* Nav */}
       <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto pr-1">
         {nav.map((item) => {
           const active =
@@ -80,37 +68,12 @@ export default function Sidebar() {
               <Link
                 href={item.href}
                 className={`flex items-center gap-3 rounded-xl px-3 py-3 text-[15px] transition-colors ${
-                  active
-                    ? "bg-ink text-white"
-                    : "text-ink/85 hover:bg-subtle"
+                  active ? "bg-ink text-white" : "text-ink/85 hover:bg-subtle"
                 }`}
               >
                 <Icon size={18} strokeWidth={active ? 2.25 : 1.75} />
                 <span>{item.label}</span>
               </Link>
-
-              {/* Projects sub-list — visible only on /projects/* pages */}
-              {item.href === "/projects" && onProjects && (
-                <ul className="mt-1 ml-6 flex flex-col gap-0.5 border-l border-line pl-2">
-                  {projects.map((p) => {
-                    const activeSub = pathname === `/projects/${p.slug}`;
-                    return (
-                      <li key={p.slug}>
-                        <Link
-                          href={`/projects/${p.slug}`}
-                          className={`block truncate rounded px-2.5 py-1.5 text-[13px] transition-colors ${
-                            activeSub
-                              ? "bg-subtle font-medium text-ink"
-                              : "text-ink/70 hover:bg-subtle hover:text-ink"
-                          }`}
-                        >
-                          {p.name}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
             </div>
           );
         })}
