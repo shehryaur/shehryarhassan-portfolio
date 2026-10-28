@@ -213,22 +213,8 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 /* ============================================================
    "Catch me" paper robot on Home (components/RecentlyBot.tsx)
    ============================================================ */
-/* Wander path; bot-face below flips it in sync (right for 0-40%, left after) */
-@keyframes bot-wander {
-  0%   { left: 0%;  top: 40%; }
-  20%  { left: 40%; top: 22%; }
-  40%  { left: 78%; top: 55%; }
-  60%  { left: 55%; top: 64%; }
-  80%  { left: 20%; top: 58%; }
-  100% { left: 0%;  top: 40%; }
-}
-.bot-wander { animation: bot-wander 16s ease-in-out infinite; }
-
-@keyframes bot-face {
-  0%, 39.9% { transform: scaleX(1); }
-  40%, 100% { transform: scaleX(-1); }
-}
-.bot-face { animation: bot-face 16s step-end infinite; }
+/* Faces the way it walks (--face is 1 or -1, set by the follow loop) */
+.robot .bot-facing { transform: scaleX(var(--face, 1)); transition: transform .2s ease; }
 
 /* Legs swing alternately while walking */
 .bot-leg-l, .bot-leg-r { transform-box: fill-box; transform-origin: 50% 0%; }
@@ -238,6 +224,9 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 }
 .bot-leg-l { animation: bot-step .45s ease-in-out infinite alternate; }
 .bot-leg-r { animation: bot-step .45s ease-in-out infinite alternate-reverse; }
+/* Legs stand straight when the robot is not walking */
+.robot[data-moving="false"] .bot-leg-l,
+.robot[data-moving="false"] .bot-leg-r { animation: none; }
 
 /* Blink every few seconds */
 .bot-eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: bot-blink 4s infinite; }
@@ -259,16 +248,41 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 @keyframes bot-wave-l { from { transform: rotate(88deg); }  to { transform: rotate(112deg); } }
 @keyframes bot-wave-r { from { transform: rotate(-88deg); } to { transform: rotate(-112deg); } }
 
-/* Nervous wiggle when hovered */
-.bot-wiggle { animation: bot-wiggle .3s ease-in-out infinite alternate; }
-@keyframes bot-wiggle {
-  from { transform: rotate(-6deg); }
-  to   { transform: rotate(6deg); }
+/* Reactions when it bumps into something (data-anim on .robot); tips over at its feet */
+.robot .bot-art { transform-origin: 50% 90%; }
+@keyframes bot-bump {
+  0%   { transform: translateY(0) rotate(0); }
+  30%  { transform: translateY(-22px) rotate(-8deg); }
+  60%  { transform: translateY(0) rotate(6deg); }
+  80%  { transform: translateY(-4px) rotate(-3deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@keyframes bot-fall {
+  0%   { transform: rotate(0) translateY(0); }
+  35%  { transform: rotate(-18deg) translateY(-10px); }
+  100% { transform: rotate(95deg) translateY(14px); }
+}
+/* Slides out sideways from behind the lifted polaroid */
+@keyframes bot-peek {
+  0%   { transform: translateX(22px) scale(.5); opacity: 0; }
+  70%  { transform: translateX(-3px) scale(1.08); opacity: 1; }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+.robot[data-anim="bump"] .bot-art { animation: bot-bump .55s ease-out; }
+.robot[data-anim="fall"] .bot-art { animation: bot-fall .6s ease-in forwards; }
+.robot[data-anim="hidden"] .bot-art { opacity: 0; transform: rotate(95deg) translateY(14px); }
+.robot[data-anim="peek"] .bot-art { animation: bot-peek .6s cubic-bezier(.2, .8, .2, 1.2); }
+
+/* The polaroid the robot ducks behind lifts up off the board */
+.polaroid[data-lifted="true"] {
+  transform: translateY(-40px) rotate(-16deg) scale(1.06) !important;
+  z-index: 35 !important;
+  box-shadow: 0 22px 34px -10px rgba(30, 25, 15, 0.45), 0 3px 6px rgba(30, 25, 15, 0.15);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bot-wander, .bot-face, .bot-leg-l, .bot-leg-r, .bot-eyes,
-  .bot-antenna, .bot-wiggle { animation: none; }
+  .bot-leg-l, .bot-leg-r, .bot-eyes, .bot-antenna,
+  .robot .bot-art { animation: none !important; }
   .bot-arm-wave-l { animation: none; transform: rotate(100deg); }
   .bot-arm-wave-r { animation: none; transform: rotate(-100deg); }
 }
