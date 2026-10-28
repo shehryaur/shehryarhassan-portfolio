@@ -272,3 +272,21 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
   .bot-arm-wave-l { animation: none; transform: rotate(100deg); }
   .bot-arm-wave-r { animation: none; transform: rotate(-100deg); }
 }
+
+/* ============================================================
+   Home flight path (components/FlightPath.tsx)
+   ============================================================ */
+/* Dashes drift slowly along the route, toward the next city */
+@keyframes flight-dash { to { stroke-dashoffset: -140; } }
+.flight-dash { animation: flight-dash 12s linear infinite; }
+
+/* Parked plane hovers a little */
+@keyframes plane-float {
+  from { transform: translateY(0) rotate(0deg); }
+  to   { transform: translateY(-4px) rotate(-3deg); }
+}
+.plane-float { animation: plane-float 2.4s ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flight-dash, .plane-float { animation: none; }
+}
