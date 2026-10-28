@@ -1,5 +1,6 @@
 "use client";
 
+import FlightPath from "@/components/FlightPath";
 import RecentlyBot from "@/components/RecentlyBot";
 import ScatteredHighlights from "@/components/ScatteredHighlights";
 
@@ -9,6 +10,9 @@ const rotation = ["San Francisco", "Tokyo", "Berlin", "Buenos Aires"];
 export default function HomePage() {
   return (
     <div>
+      {/* Minerva rotation as a paper-plane route behind the page (desktop) */}
+      <FlightPath />
+
       {/* Hero */}
       <section className="lg:flex lg:items-start lg:justify-between lg:gap-10">
         <div className="lg:max-w-2xl">
@@ -26,7 +30,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-7 text-[14px] font-medium text-ink/70">
+          <div className="mt-7 text-[14px] font-medium text-ink/70 lg:hidden">
             Minerva rotation:{" "}
             <span className="text-ink">{rotation.join(" · ")}</span>
           </div>
