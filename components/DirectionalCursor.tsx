@@ -12,13 +12,14 @@ const STEPS = 72;
 
 const cursorFor = (deg: number) => {
   const rad = (deg * Math.PI) / 180;
-  // Hotspot = arrow tip (12,2) rotated around the centre (12,12).
-  const hx = Math.round(12 + 10 * Math.sin(rad));
-  const hy = Math.round(12 - 10 * Math.cos(rad));
+  // Hotspot = arrow tip (12, 3.5) rotated around the centre (12, 12).
+  const hx = Math.round(12 + 8.5 * Math.sin(rad));
+  const hy = Math.round(12 - 8.5 * Math.cos(rad));
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>` +
-    `<path transform='rotate(${deg} 12 12)' d='M12 2 L20 22 L12 17 L4 22 Z' ` +
-    `fill='#0a0a0a' stroke='white' stroke-width='1.5' stroke-linejoin='round'/></svg>`;
+    // Rounded triangle: white body with a thick black outline, tip at (12, 3)
+    `<path transform='rotate(${deg} 12 12)' d='M12 3.5 L19.5 19.5 Q12 15.5 4.5 19.5 Z' ` +
+    `fill='white' stroke='#0a0a0a' stroke-width='2.6' stroke-linejoin='round'/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}") ${hx} ${hy}, auto`;
 };
 
