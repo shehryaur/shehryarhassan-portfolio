@@ -7,7 +7,7 @@
  * pins (HTML) and the path (SVG, non-uniformly scaled) line up at any size.
  */
 // Pakistan is where it started; the plane is parked at the current city (SF).
-const origin = { name: "Pakistan", note: "home", x: 3, y: 64 };
+const origin = { name: "Pakistan", note: "home", x: 4, y: 62 };
 
 const cities = [
   { name: "San Francisco", note: "now", x: 10, y: 82 },
@@ -17,7 +17,7 @@ const cities = [
 ];
 
 // Short trail into SF (where the plane came from), then the route ahead.
-const trail = "M 3 64 C 4 72, 6 79, 10 82";
+const trail = "M 4 62 C 5 71, 7 78, 10 82";
 const route = [
   "M 10 82",
   "C 22 96, 34 98, 45 92", // SF -> Tokyo
@@ -64,7 +64,8 @@ export default function FlightPath() {
       {/* Starting point: Pakistan */}
       <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${origin.x}%`, top: `${origin.y}%` }}>
         <span className="block h-3 w-3 rounded-full border-2 border-ink/60 bg-emerald-700/80" />
-        <span className="hand absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap text-[18px] leading-none text-ink/60">
+        {/* Left-aligned so it never slides under the sidebar */}
+        <span className="hand absolute -left-1 top-4 whitespace-nowrap text-[18px] leading-none text-ink/60">
           {origin.name}
           <span className="ml-1 text-[14px] text-ink/40">({origin.note})</span>
         </span>
