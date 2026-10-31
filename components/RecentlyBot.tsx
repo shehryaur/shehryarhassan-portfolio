@@ -19,13 +19,25 @@ const MAX_SPEED = 2.6;
 const EASE = 0.05;
 /** A bumped obstacle can't trigger again for this long. */
 const COOLDOWN_MS = 9000;
+/** Dozes off after the mouse has been still this long. */
+const NAP_AFTER_MS = 8000;
+
+/** Tips it gives when you hover the sidebar links. */
+const navTips: Record<string, string> = {
+  "/": "You're already home!",
+  "/projects": "Try the Go filter on Projects!",
+  "/highlights": "A non-profit, a paper, a gold medal.",
+  "/experience": "Adobe, Blackmont, Skill Craft. Busy guy!",
+  "/contact": "He reads every note. Say hi!",
+};
 
 /**
  * Paper-cutout robot drawn in the site's paper palette. Parts carry class
  * names that globals.css animates (walk, blink, antenna bob, wave).
  */
-function PaperBot({ happy }: { happy: boolean }) {
-  const ink = "#0a0a0a";
+function PaperBot({ happy, sleepy }: { happy: boolean; sleepy: boolean }) {
+  // Warm pencil-ink outlines, to match the handwriting and paper on the site
+  const ink = "#2b2622";
   const paper = "#fdfcf8";
   return (
     <svg viewBox="0 0 64 76" width={BOT_W} height={BOT_H} aria-hidden="true" className="overflow-visible">
@@ -58,7 +70,13 @@ function PaperBot({ happy }: { happy: boolean }) {
       <rect x="35" y="11" width="18" height="7" rx="1" fill="rgba(254,243,199,0.95)" transform="rotate(14 44 14)" />
       {/* Face screen */}
       <rect x="15" y="21" width="34" height="18" rx="6" fill={ink} />
-      {happy ? (
+      {sleepy ? (
+        // Closed eyes while napping
+        <g fill="none" stroke="#fde68a" strokeWidth="2.2" strokeLinecap="round">
+          <path d="M21 30 Q25 33 29 30" />
+          <path d="M35 30 Q39 33 43 30" />
+        </g>
+      ) : happy ? (
         <g fill="none" stroke="#fde68a" strokeWidth="2.2" strokeLinecap="round">
           <path d="M21 31 Q25 26 29 31" />
           <path d="M35 31 Q39 26 43 31" />
@@ -102,7 +120,10 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
  * Home robot. On desktop it slowly follows the cursor; when it walks into an
  * element marked `data-bot-say`, it jumps and says that line. An element
  * with `data-bot-act="lift"` gets a stunt: the bot strikes it, falls, the
- * polaroid lifts, the bot slips behind and pops out the other side.
+ * polaroid lifts, the bot slips behind and pops out the other side. One with
+ * `data-bot-act="climb"` gets it stuck, so it throws a rope, climbs on top
+ * and says its line from up there. It naps when the mouse is still, and
+ * gives tips when you hover the sidebar links.
  * Clicking the bot opens a note with recent wins. On touch screens or with
  * reduced motion it stays put in its spot.
  */
@@ -114,6 +135,7 @@ export default function RecentlyBot() {
   const [message, setMessage] = useState<string | null>(null);
   const [anim, setAnim] = useState<string>("");
   const [noteOnLeft, setNoteOnLeft] = useState(false);
+  const [rope, setRope] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
 
   // Live state for the movement loop (refs, so it never re-renders per frame).
   const pos = useRef({ x: 0, y: 0 });
@@ -121,6 +143,9 @@ export default function RecentlyBot() {
   const busy = useRef(false);
   const caughtRef = useRef(false);
   const cooldowns = useRef(new Map<Element, number>());
+  const lastMove = useRef(Date.now());
+  const napping = useRef(false);
+  const graceUntil = useRef(0);
 
   // Follow only with a mouse and when motion is welcome.
   useEffect(() => {
@@ -148,10 +173,33 @@ export default function RecentlyBot() {
     };
     place();
 
+    const say = (line: string, ms: number) => {
+      setMessage(line);
+      window.setTimeout(() => setMessage((m) => (m === line ? null : m)), ms);
+    };
+
     const onMove = (e: MouseEvent) => {
       cursor.current = { x: e.clientX, y: e.clientY };
+      lastMove.current = Date.now();
+      if (napping.current) {
+        napping.current = false;
+        graceUntil.current = Date.now() + 1800;
+        setAnim("");
+        say("Oh! I'm up!", 1500);
+      }
     };
     window.addEventListener("mousemove", onMove, { passive: true });
+
+    // Sidebar tips on hover (rate-limited, never interrupts a stunt).
+    let lastTip = 0;
+    const onOver = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.("aside a[href^='/']");
+      const tip = a ? navTips[a.getAttribute("href") ?? ""] : undefined;
+      if (!tip || busy.current || napping.current || Date.now() - lastTip < 4000) return;
+      lastTip = Date.now();
+      say(tip, 2400);
+    };
+    document.addEventListener("mouseover", onOver);
 
     const clamp = (x: number, y: number) => {
       const minX = window.innerWidth >= 768 ? 308 : 8; // stay right of the sidebar
@@ -185,6 +233,7 @@ export default function RecentlyBot() {
       await wait(480);
       bot.style.transition = "";
       busy.current = false;
+      graceUntil.current = Date.now() + 1200; // short breather before the next bump
       await wait(2600);
       setMessage((m) => (m === line ? null : m));
     };
@@ -218,11 +267,52 @@ export default function RecentlyBot() {
       window.dispatchEvent(new CustomEvent("bot:lift", { detail: { key, up: false } }));
       await wait(500);
       busy.current = false;
+      graceUntil.current = Date.now() + 1200; // short breather before the next bump
       await wait(2200);
       setMessage((m) => (m === line ? null : m));
     };
 
+    // Rope climb: gets stuck, throws a rope to the card's top, climbs up, perches and talks.
+    const climb = async (el: HTMLElement, line: string) => {
+      busy.current = true;
+      setMoving(false);
+      setAnim("strain");
+      setMessage("Ugh, stuck!");
+      await wait(850);
+      const t = el.getBoundingClientRect();
+      const hook = { x: t.left + t.width / 2, y: t.top + 3 };
+      bot.style.setProperty("--face", hook.x >= pos.current.x + BOT_W / 2 ? "1" : "-1");
+      setMessage(null);
+      setAnim("throw");
+      setRope({ x1: pos.current.x + BOT_W / 2, y1: pos.current.y + BOT_H * 0.6, x2: hook.x, y2: hook.y });
+      await wait(600);
+      setAnim("climb");
+      bot.style.transition = "transform 1.3s cubic-bezier(.45,0,.25,1)";
+      pos.current = clamp(hook.x - BOT_W / 2, t.top - BOT_H + 12);
+      place();
+      await wait(1350);
+      bot.style.transition = "";
+      setRope(null);
+      setAnim("perch");
+      setMessage(line);
+      await wait(2800);
+      setAnim("bump"); // hops down beside the card, on the cursor's side
+      const side = (cursor.current?.x ?? 0) >= t.left + t.width / 2 ? 1 : -1;
+      bot.style.transition = "transform .45s ease-out";
+      pos.current = clamp(side > 0 ? t.right + 6 : t.left - BOT_W - 6, t.bottom - BOT_H);
+      bot.style.setProperty("--face", String(side));
+      place();
+      await wait(480);
+      bot.style.transition = "";
+      setAnim("");
+      busy.current = false;
+      graceUntil.current = Date.now() + 1200; // short breather before the next bump
+      await wait(1800);
+      setMessage((m) => (m === line ? null : m));
+    };
+
     const checkBumps = () => {
+      if (Date.now() < graceUntil.current) return;
       const cx = pos.current.x + BOT_W / 2;
       const cy = pos.current.y + BOT_H / 2;
       const now = Date.now();
@@ -235,6 +325,7 @@ export default function RecentlyBot() {
         cooldowns.current.set(el, now);
         const line = el.dataset.botSay ?? "";
         if (el.dataset.botAct === "lift") void stunt(el, line);
+        else if (el.dataset.botAct === "climb") void climb(el, line);
         else void bump(el, line);
         return;
       }
@@ -243,10 +334,19 @@ export default function RecentlyBot() {
     // Movement loop. A timer (not rAF) keeps it simple; ~60 ticks a second.
     let tick = 0;
     const id = window.setInterval(() => {
-      if (busy.current || caughtRef.current || !cursor.current) {
+      if (busy.current || caughtRef.current || napping.current) {
         setMoving(false);
         return;
       }
+      // Doze off when the mouse has been still a while.
+      if (Date.now() - lastMove.current > NAP_AFTER_MS) {
+        napping.current = true;
+        setMoving(false);
+        setAnim("nap");
+        setMessage("Zzz…");
+        return;
+      }
+      if (!cursor.current) return;
       const goal = clamp(cursor.current.x + FOLLOW_OFFSET.x - BOT_W / 2, cursor.current.y + FOLLOW_OFFSET.y - BOT_H / 2);
       const dx = goal.x - pos.current.x;
       const dy = goal.y - pos.current.y;
@@ -264,6 +364,7 @@ export default function RecentlyBot() {
 
     return () => {
       window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
       window.clearInterval(id);
     };
   }, [follow]);
@@ -273,6 +374,29 @@ export default function RecentlyBot() {
   return (
     // In follow mode this is only the starting spot; the bot itself is fixed.
     <div ref={spotRef} className={follow ? "relative mt-8 h-0" : "relative mt-8 h-24"}>
+      {/* Twine rope thrown up to a polaroid during the climb */}
+      {rope && (
+        <svg className="pointer-events-none fixed inset-0 z-[39] h-full w-full" aria-hidden="true">
+          <path
+            className="rope-throw"
+            pathLength={1}
+            d={`M ${rope.x1} ${rope.y1} Q ${(rope.x1 + rope.x2) / 2} ${Math.min(rope.y1, rope.y2) - 70} ${rope.x2} ${rope.y2}`}
+            fill="none"
+            stroke="#9a7b4f"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          {/* Hook on the card's top edge */}
+          <path
+            className="rope-hook"
+            d={`M ${rope.x2 - 5} ${rope.y2 - 6} q 5 -6 10 0 q 0 6 -5 9`}
+            fill="none"
+            stroke="#2b2622"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
       <div
         ref={botRef}
         data-moving="false"
@@ -292,7 +416,7 @@ export default function RecentlyBot() {
           {/* Faces the way it walks; bot-art carries the bump/fall/peek animations */}
           <span className="bot-facing block">
             <span className="bot-art block drop-shadow-[0_6px_6px_rgba(30,25,15,0.28)]">
-              <PaperBot happy={caught || anim === "peek"} />
+              <PaperBot happy={caught || anim === "peek" || anim === "perch"} sleepy={anim === "nap"} />
             </span>
           </span>
         </button>
@@ -300,8 +424,10 @@ export default function RecentlyBot() {
         {bubble && (
           <span
             role="status"
-            className="hand pointer-events-none absolute bottom-full left-1/2 mb-1 w-max max-w-[220px] -translate-x-1/2 rounded-lg bg-[#fdfcf8] px-2.5 py-1 text-center text-[17px] leading-tight text-ink shadow-[0_4px_10px_-3px_rgba(30,25,15,0.3)]"
+            className="bot-note hand pointer-events-none absolute bottom-full left-1/2 mb-2 w-max max-w-[220px] rounded-sm bg-[#fdfcf8] px-3 pb-1 pt-2 text-center text-[17px] leading-tight text-ink shadow-[0_6px_14px_-4px_rgba(30,25,15,0.35)]"
           >
+            {/* Little strip of tape, like the polaroids */}
+            <span className="absolute -top-1.5 left-1/2 h-3 w-9 -translate-x-1/2 -rotate-3 bg-amber-100/90" aria-hidden="true" />
             {bubble}
             <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-[#fdfcf8]" aria-hidden="true" />
           </span>
