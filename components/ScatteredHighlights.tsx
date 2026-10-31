@@ -30,7 +30,7 @@ const robotLines: Record<string, string> = {
 /** Adobe lives under Experience, so its polaroid links there. */
 const adobe: Pin = {
   key: "adobe",
-  href: "/experience",
+  href: "/experience#adobe",
   image: "/highlight-adobe-ai.jpg",
   alt: "Adobe",
   caption: "Adobe x Minerva",
