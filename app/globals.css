@@ -280,7 +280,49 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
   box-shadow: 0 22px 34px -10px rgba(30, 25, 15, 0.45), 0 3px 6px rgba(30, 25, 15, 0.15);
 }
 
+/* Stuck: straining shake. Throw: leans back then flings. Climb: hand-over-hand sway. */
+@keyframes bot-strain {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25%      { transform: translateX(-2px) rotate(-3deg); }
+  75%      { transform: translateX(2px) rotate(3deg); }
+}
+@keyframes bot-throw {
+  0%   { transform: rotate(0); }
+  40%  { transform: rotate(-14deg); }
+  70%  { transform: rotate(10deg); }
+  100% { transform: rotate(0); }
+}
+@keyframes bot-climb {
+  from { transform: rotate(-7deg); }
+  to   { transform: rotate(7deg); }
+}
+/* Perched on a card: gentle bob. Napping: slow breathing, head tipped. */
+@keyframes bot-perch {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+@keyframes bot-nap {
+  from { transform: rotate(8deg) scale(1); }
+  to   { transform: rotate(8deg) scale(1.03); }
+}
+.robot[data-anim="strain"] .bot-art { animation: bot-strain .18s linear infinite; }
+.robot[data-anim="throw"] .bot-art  { animation: bot-throw .55s ease-out; }
+.robot[data-anim="climb"] .bot-art  { animation: bot-climb .28s ease-in-out infinite alternate; }
+.robot[data-anim="perch"] .bot-art  { animation: bot-perch 1.2s ease-in-out infinite alternate; }
+.robot[data-anim="nap"] .bot-art    { animation: bot-nap 1.6s ease-in-out infinite alternate; }
+
+/* The rope draws itself from the bot's hand up to the hook */
+@keyframes rope-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.rope-throw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: rope-draw .5s ease-out forwards; }
+.rope-hook  { opacity: 0; animation: rope-hook-in .1s .45s forwards; }
+@keyframes rope-hook-in { to { opacity: 1; } }
+
+/* Speech notes sit slightly askew, like taped scraps */
+.bot-note { transform: translateX(-50%) rotate(-2deg); }
+
 @media (prefers-reduced-motion: reduce) {
+  .rope-throw { animation: none; stroke-dashoffset: 0; }
+  .rope-hook  { animation: none; opacity: 1; }
   .bot-leg-l, .bot-leg-r, .bot-eyes, .bot-antenna,
   .robot .bot-art { animation: none !important; }
   .bot-arm-wave-l { animation: none; transform: rotate(100deg); }
