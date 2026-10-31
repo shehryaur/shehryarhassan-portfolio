@@ -6,8 +6,8 @@ import { highlights } from "@/lib/highlights";
 import AvatarVisionModel from "@/components/AvatarVisionModel";
 
 /**
- * Home hero collage: the round photo with four square polaroids taped around
- * it, like a pin board. Sized to sit above the fold (320 x 460).
+ * Home hero: the round photo with four square polaroids tucked behind its
+ * corners, one per corner. Sized to sit above the fold (320 x 370).
  * Hover straightens a polaroid and brings it to the front.
  */
 type Pin = {
@@ -51,13 +51,13 @@ const pins: Pin[] = [
   })),
 ];
 
-// Order matches pins: Adobe and the medal pinned to the photo's lower corners,
-// Ar-Razzaq and the research paper in a loose row underneath.
+// Order matches pins (Adobe, Ar-Razzaq, research, gold medal). Each sits behind
+// the photo (z 0), peeking out from one corner, with a gentle tilt.
 const placements = [
-  { top: 168, left: 0, rotate: "-6deg", tape: "-5deg", z: 3 },
-  { top: 318, left: 30, rotate: "4deg", tape: "3deg", z: 2 },
-  { top: 330, left: 172, rotate: "-5deg", tape: "-4deg", z: 2 },
-  { top: 182, left: 200, rotate: "6deg", tape: "5deg", z: 3 },
+  { top: 0, left: 0, rotate: "-4deg", tape: "-3deg", z: 0 },
+  { top: 244, left: 4, rotate: "3deg", tape: "2deg", z: 0 },
+  { top: 250, left: 198, rotate: "-3deg", tape: "-2deg", z: 0 },
+  { top: 8, left: 202, rotate: "4deg", tape: "3deg", z: 0 },
 ];
 
 export default function ScatteredHighlights() {
@@ -73,10 +73,10 @@ export default function ScatteredHighlights() {
   }, []);
 
   return (
-    <div className="relative mx-auto h-[460px] w-[320px]">
-      {/* Round photo, centred at the top of the board */}
-      <div className="absolute left-[50px] top-0 z-[1] rounded-full" data-bot-say="Looking sharp in that suit!">
-        <AvatarVisionModel className="h-[220px] w-[220px]" />
+    <div className="relative mx-auto h-[370px] w-[320px]">
+      {/* Round photo, centred, in front of the polaroids */}
+      <div className="absolute left-[30px] top-[52px] z-[1] rounded-full" data-bot-say="Looking sharp in that suit!">
+        <AvatarVisionModel className="h-[260px] w-[260px]" />
       </div>
 
       {pins.slice(0, placements.length).map((h, i) => {

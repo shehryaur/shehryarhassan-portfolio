@@ -99,7 +99,7 @@ export default function ProjectTimeline() {
 
       {/* ---------- Project list ---------- */}
       <div className="md:pb-14">
-        <ul className="divide-y divide-line border-y border-line font-mono">
+        <ul className="divide-y divide-line border-y border-line">
           {visible.map((p, i) => {
             const expanded = open.has(p.slug);
             return (

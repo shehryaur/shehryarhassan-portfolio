@@ -34,8 +34,8 @@ export default function FlightPath() {
       aria-hidden="true"
     >
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
-        <path d={trail} fill="none" stroke="#0a0a0a" strokeOpacity="0.18" strokeWidth="1.5" strokeDasharray="1 5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-        <path className="flight-dash" d={route} fill="none" stroke="#0a0a0a" strokeOpacity="0.22" strokeWidth="1.5" strokeDasharray="7 7" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        <path d={trail} fill="none" stroke="#0a0a0a" strokeOpacity="0.1" strokeWidth="1.5" strokeDasharray="1 5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        <path className="flight-dash" d={route} fill="none" stroke="#0a0a0a" strokeOpacity="0.12" strokeWidth="1.5" strokeDasharray="7 7" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
       </svg>
 
       {/* City pins: small paper dots with handwritten names */}
@@ -52,11 +52,11 @@ export default function FlightPath() {
           />
           <span
             className={`hand absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap text-[18px] leading-none ${
-              i === 0 ? "text-ink/75" : "text-ink/35"
+              i === 0 ? "text-ink/50" : "text-ink/25"
             }`}
           >
             {c.name}
-            {c.note && <span className="ml-1 text-[14px] text-ink/40">({c.note})</span>}
+            {c.note && <span className="ml-1 text-[14px] text-ink/30">({c.note})</span>}
           </span>
         </div>
       ))}
@@ -65,9 +65,9 @@ export default function FlightPath() {
       <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${origin.x}%`, top: `${origin.y}%` }}>
         <span className="block h-3 w-3 rounded-full border-2 border-ink/60 bg-emerald-700/80" />
         {/* Left-aligned so it never slides under the sidebar */}
-        <span className="hand absolute -left-1 top-4 whitespace-nowrap text-[18px] leading-none text-ink/60">
+        <span className="hand absolute -left-1 top-4 whitespace-nowrap text-[18px] leading-none text-ink/45">
           {origin.name}
-          <span className="ml-1 text-[14px] text-ink/40">({origin.note})</span>
+          <span className="ml-1 text-[14px] text-ink/30">({origin.note})</span>
         </span>
       </div>
 

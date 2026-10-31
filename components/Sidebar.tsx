@@ -35,23 +35,18 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 z-30 hidden h-screen w-[300px] flex-col border-r border-line bg-page/80 px-5 py-7 backdrop-blur-sm md:flex">
       {/* Profile */}
-      <div className="mb-7 flex items-center gap-4 px-2">
-        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full bg-subtle ring-1 ring-line">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={site.avatar}
-            alt={site.fullName}
-            className="h-full w-full object-cover object-[50%_20%]"
-          />
-        </div>
-        <div className="min-w-0">
-          <div className="text-[17px] font-semibold leading-tight text-ink">
-            {site.name}
+      <div className="mb-7 flex min-h-14 items-center gap-4 px-2">
+        {/* Home already shows the big photo, so the small one hides there */}
+        {pathname !== "/" && (
+          <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full bg-subtle ring-1 ring-line">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={site.avatar}
+              alt={site.fullName}
+              className="h-full w-full object-cover object-[50%_20%]"
+            />
           </div>
-          <div className="mt-0.5 truncate text-[13px] text-mute">
-            {site.role}
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Nav */}
