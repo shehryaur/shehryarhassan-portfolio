@@ -6,8 +6,8 @@ import { highlights } from "@/lib/highlights";
 import AvatarVisionModel from "@/components/AvatarVisionModel";
 
 /**
- * Home hero collage: the round photo with four square polaroids taped around
- * it, like a pin board. Sized to sit above the fold (320 x 460).
+ * Home hero: the round photo with two square polaroids tucked behind its
+ * lower edge (Adobe and Ar-Razzaq). Sized to sit above the fold (320 x 350).
  * Hover straightens a polaroid and brings it to the front.
  */
 type Pin = {
@@ -51,13 +51,11 @@ const pins: Pin[] = [
   })),
 ];
 
-// Order matches pins: Adobe and the medal pinned to the photo's lower corners,
-// Ar-Razzaq and the research paper in a loose row underneath.
+// Only the first two pins show here (Adobe, Ar-Razzaq); the rest live on Highlights.
+// They sit behind the photo (z 0), peeking out from its lower corners.
 const placements = [
-  { top: 168, left: 0, rotate: "-6deg", tape: "-5deg", z: 3 },
-  { top: 318, left: 30, rotate: "4deg", tape: "3deg", z: 2 },
-  { top: 330, left: 172, rotate: "-5deg", tape: "-4deg", z: 2 },
-  { top: 182, left: 200, rotate: "6deg", tape: "5deg", z: 3 },
+  { top: 196, left: 0, rotate: "-4deg", tape: "-3deg", z: 0 },
+  { top: 212, left: 202, rotate: "3deg", tape: "2deg", z: 0 },
 ];
 
 export default function ScatteredHighlights() {
@@ -73,10 +71,10 @@ export default function ScatteredHighlights() {
   }, []);
 
   return (
-    <div className="relative mx-auto h-[460px] w-[320px]">
-      {/* Round photo, centred at the top of the board */}
-      <div className="absolute left-[50px] top-0 z-[1] rounded-full" data-bot-say="Looking sharp in that suit!">
-        <AvatarVisionModel className="h-[220px] w-[220px]" />
+    <div className="relative mx-auto h-[350px] w-[320px]">
+      {/* Round photo, centred, in front of the polaroids */}
+      <div className="absolute left-[30px] top-0 z-[1] rounded-full" data-bot-say="Looking sharp in that suit!">
+        <AvatarVisionModel className="h-[260px] w-[260px]" />
       </div>
 
       {pins.slice(0, placements.length).map((h, i) => {
