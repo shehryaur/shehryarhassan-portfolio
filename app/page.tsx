@@ -21,8 +21,8 @@ export default function HomePage() {
           </h1>
           {/* Bio block */}
           <div className="mt-8 space-y-4 text-[17px] leading-[1.75] text-ink/90">
-            <p data-bot-say="He talks to users, writes the spec AND ships the code.">
-              I build AI products end to end: talk to users, write the spec, ship the code.
+            <p data-bot-say="He listens to users, then ships the fix. That's the FDE way!">
+              Forward deployed engineer turning real user problems into shipped AI products.
             </p>
             <p>
               I&apos;m an undergraduate at Minerva University studying{" "}
