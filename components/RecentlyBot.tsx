@@ -14,9 +14,9 @@ const BOT_W = 56;
 const BOT_H = 66;
 /** It trails the cursor from just below-right, so it never sits under it. */
 const FOLLOW_OFFSET = { x: 34, y: 26 };
-/** Max walking speed (px per tick) and how quickly it closes the gap. */
-const MAX_SPEED = 2.6;
-const EASE = 0.05;
+/** Top walking speed (px/s) and how quickly its velocity catches up (per second). */
+const MAX_SPEED = 170;
+const ACCEL = 6;
 /** A bumped obstacle can't trigger again for this long. */
 const COOLDOWN_MS = 9000;
 /** Dozes off after the mouse has been still this long. */
@@ -169,7 +169,7 @@ export default function RecentlyBot() {
     pos.current = { x: r.left, y: r.top };
 
     const place = () => {
-      bot.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px)`;
+      bot.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0)`;
     };
     place();
 
@@ -209,9 +209,17 @@ export default function RecentlyBot() {
       };
     };
 
+    let movingNow = false;
+    let faceNow = 1;
     const setMoving = (moving: boolean, dir?: number) => {
-      bot.dataset.moving = moving ? "true" : "false";
-      if (dir) bot.style.setProperty("--face", String(dir));
+      if (moving !== movingNow) {
+        movingNow = moving;
+        bot.dataset.moving = moving ? "true" : "false";
+      }
+      if (dir && dir !== faceNow) {
+        faceNow = dir;
+        bot.style.setProperty("--face", String(dir));
+      }
     };
 
     // Generic bump: jump, say the line, back off a little.
@@ -225,15 +233,15 @@ export default function RecentlyBot() {
       const cy = pos.current.y + BOT_H / 2;
       const away = { x: cx - (t.left + t.width / 2), y: cy - (t.top + t.height / 2) };
       const len = Math.hypot(away.x, away.y) || 1;
-      await wait(550);
+      await wait(450);
       setAnim("");
-      bot.style.transition = "transform .45s ease-out";
+      bot.style.transition = "transform .35s ease-out";
       pos.current = clamp(pos.current.x + (away.x / len) * 46, pos.current.y + (away.y / len) * 46);
       place();
-      await wait(480);
+      await wait(360);
       bot.style.transition = "";
       busy.current = false;
-      graceUntil.current = Date.now() + 1200; // short breather before the next bump
+      graceUntil.current = Date.now() + 900; // short breather before the next bump
       await wait(2600);
       setMessage((m) => (m === line ? null : m));
     };
@@ -263,11 +271,11 @@ export default function RecentlyBot() {
       setMessage(line);
       await wait(700);
       setAnim("");
-      await wait(1600);
+      await wait(900);
       window.dispatchEvent(new CustomEvent("bot:lift", { detail: { key, up: false } }));
-      await wait(500);
+      await wait(250);
       busy.current = false;
-      graceUntil.current = Date.now() + 1200; // short breather before the next bump
+      graceUntil.current = Date.now() + 900; // short breather before the next bump
       await wait(2200);
       setMessage((m) => (m === line ? null : m));
     };
@@ -278,24 +286,24 @@ export default function RecentlyBot() {
       setMoving(false);
       setAnim("strain");
       setMessage("Ugh, stuck!");
-      await wait(850);
+      await wait(550);
       const t = el.getBoundingClientRect();
       const hook = { x: t.left + t.width / 2, y: t.top + 3 };
       bot.style.setProperty("--face", hook.x >= pos.current.x + BOT_W / 2 ? "1" : "-1");
       setMessage(null);
       setAnim("throw");
       setRope({ x1: pos.current.x + BOT_W / 2, y1: pos.current.y + BOT_H * 0.6, x2: hook.x, y2: hook.y });
-      await wait(600);
+      await wait(420);
       setAnim("climb");
-      bot.style.transition = "transform 1.3s cubic-bezier(.45,0,.25,1)";
+      bot.style.transition = "transform .9s cubic-bezier(.45,0,.25,1)";
       pos.current = clamp(hook.x - BOT_W / 2, t.top - BOT_H + 12);
       place();
-      await wait(1350);
+      await wait(920);
       bot.style.transition = "";
       setRope(null);
       setAnim("perch");
       setMessage(line);
-      await wait(2800);
+      await wait(1300);
       setAnim("bump"); // hops down beside the card, on the cursor's side
       const side = (cursor.current?.x ?? 0) >= t.left + t.width / 2 ? 1 : -1;
       bot.style.transition = "transform .45s ease-out";
@@ -306,7 +314,7 @@ export default function RecentlyBot() {
       bot.style.transition = "";
       setAnim("");
       busy.current = false;
-      graceUntil.current = Date.now() + 1200; // short breather before the next bump
+      graceUntil.current = Date.now() + 900; // short breather before the next bump
       await wait(1800);
       setMessage((m) => (m === line ? null : m));
     };
@@ -331,10 +339,17 @@ export default function RecentlyBot() {
       }
     };
 
-    // Movement loop. A timer (not rAF) keeps it simple; ~60 ticks a second.
-    let tick = 0;
-    const id = window.setInterval(() => {
+    // Movement loop, synced to the display; velocity eases toward the goal for smooth walking.
+    const vel = { x: 0, y: 0 };
+    let last = performance.now();
+    let frame = 0;
+    let raf = 0;
+    const loop = (now: number) => {
+      raf = requestAnimationFrame(loop);
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
       if (busy.current || caughtRef.current || napping.current) {
+        vel.x = vel.y = 0;
         setMoving(false);
         return;
       }
@@ -351,21 +366,24 @@ export default function RecentlyBot() {
       const dx = goal.x - pos.current.x;
       const dy = goal.y - pos.current.y;
       const dist = Math.hypot(dx, dy);
-      if (dist < 2) {
-        setMoving(false);
-        return;
-      }
-      const step = Math.min(dist * EASE, MAX_SPEED);
-      pos.current = { x: pos.current.x + (dx / dist) * step, y: pos.current.y + (dy / dist) * step };
-      setMoving(step > 0.6, Math.abs(dx) > 1 ? Math.sign(dx) : undefined);
+      // Desired speed slows down as it arrives, capped at MAX_SPEED.
+      const speed = Math.min(dist * 3, MAX_SPEED);
+      const want = dist > 0.5 ? { x: (dx / dist) * speed, y: (dy / dist) * speed } : { x: 0, y: 0 };
+      const k = 1 - Math.exp(-ACCEL * dt);
+      vel.x += (want.x - vel.x) * k;
+      vel.y += (want.y - vel.y) * k;
+      pos.current = { x: pos.current.x + vel.x * dt, y: pos.current.y + vel.y * dt };
+      const v = Math.hypot(vel.x, vel.y);
+      setMoving(v > 18, Math.abs(vel.x) > 12 ? Math.sign(vel.x) : undefined);
       place();
-      if (++tick % 4 === 0) checkBumps();
-    }, 16);
+      if (++frame % 4 === 0) checkBumps();
+    };
+    raf = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
-      window.clearInterval(id);
+      cancelAnimationFrame(raf);
     };
   }, [follow]);
 
