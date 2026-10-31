@@ -222,28 +222,9 @@ export default function RecentlyBot() {
       }
     };
 
-    // Generic bump: jump, say the line, back off a little.
-    const bump = async (el: HTMLElement, line: string) => {
-      busy.current = true;
-      setMoving(false);
-      setAnim("bump");
-      setMessage(line);
-      const t = el.getBoundingClientRect();
-      const cx = pos.current.x + BOT_W / 2;
-      const cy = pos.current.y + BOT_H / 2;
-      const away = { x: cx - (t.left + t.width / 2), y: cy - (t.top + t.height / 2) };
-      const len = Math.hypot(away.x, away.y) || 1;
-      await wait(450);
-      setAnim("");
-      bot.style.transition = "transform .35s ease-out";
-      pos.current = clamp(pos.current.x + (away.x / len) * 46, pos.current.y + (away.y / len) * 46);
-      place();
-      await wait(360);
-      bot.style.transition = "";
-      busy.current = false;
-      graceUntil.current = Date.now() + 900; // short breather before the next bump
-      await wait(2600);
-      setMessage((m) => (m === line ? null : m));
+    // Text and the photo: no collision, it just comments as it walks past.
+    const bump = (_el: HTMLElement, line: string) => {
+      say(line, 2600);
     };
 
     // Adobe stunt: strike, fall, the polaroid lifts, slip behind, pop out the other side.
