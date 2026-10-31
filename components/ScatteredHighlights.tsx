@@ -87,7 +87,7 @@ export default function ScatteredHighlights() {
             href={h.href}
             title={h.note}
             data-bot-say={h.say}
-            data-bot-act={h.key === "adobe" ? "lift" : undefined}
+            data-bot-act={h.key === "adobe" ? "lift" : "climb"}
             data-pin-key={h.key}
             data-lifted={lifted === h.key ? "true" : undefined}
             style={{ top: p.top, left: p.left, ["--tilt" as string]: p.rotate, zIndex: p.z }}
