@@ -3,12 +3,13 @@
 import { useEffect } from "react";
 
 /**
- * Native (OS-drawn, zero-lag) arrowhead cursor that turns to face the
- * direction of motion. We pre-build one rotated SVG per 5° and swap the
- * `--cursor-arrow` variable that globals.css uses for `cursor`.
+ * Native (OS-drawn, zero-lag) cursor that turns to face the direction of
+ * motion. The OS can only show images, so we swap the `--cursor-arrow`
+ * variable that globals.css uses for `cursor`; with 1° steps and a per-frame
+ * eased angle the turn reads as a smooth sweep.
  */
-// 5° steps: fine enough that turning looks continuous.
-const STEPS = 72;
+// 1° steps; images are built on first use and cached.
+const STEPS = 360;
 
 const cursorFor = (deg: number) => {
   const rad = (deg * Math.PI) / 180;
@@ -27,37 +28,55 @@ export default function DirectionalCursor() {
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const cursors = Array.from({ length: STEPS }, (_, i) => cursorFor((i * 360) / STEPS));
+    const cache = new Map<number, string>();
     const root = document.documentElement;
-    let anchorX = 0;
-    let anchorY = 0;
-    let angle = 0; // smoothed heading in degrees (0 = tip up)
-    let current = -1;
+    let lastX: number | null = null;
+    let lastY = 0;
+    // Smoothed movement direction (averages out tiny wobbles).
+    let vx = 0;
+    let vy = 0;
+    let target = -35; // heading the motion asks for (0 = tip up); starts like the resting arrow
+    let angle = -35; // heading actually shown, eased toward target every frame
+    let current = NaN;
+    let raf = 0;
 
     const onMove = (e: MouseEvent) => {
-      const dx = e.clientX - anchorX;
-      const dy = e.clientY - anchorY;
-      // Ignore jitter: only re-aim after the pointer travels a few pixels.
-      if (dx * dx + dy * dy < 16) return;
-      anchorX = e.clientX;
-      anchorY = e.clientY;
-
-      // Tip points "up" at 0°, so motion angle + 90° aims it along the motion.
-      const target = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
-      // Ease toward the target along the shortest arc, so turns sweep
-      // through the in-between angles instead of snapping.
-      const delta = ((target - angle + 540) % 360) - 180;
-      angle += delta * 0.35;
-
-      const idx = ((Math.round(angle / (360 / STEPS)) % STEPS) + STEPS) % STEPS;
-      if (idx !== current) {
-        current = idx;
-        root.style.setProperty("--cursor-arrow", cursors[idx]);
+      if (lastX !== null) {
+        vx = vx * 0.75 + (e.clientX - lastX) * 0.25;
+        vy = vy * 0.75 + (e.clientY - lastY) * 0.25;
+        // Only re-aim once there's real movement, so a still mouse keeps its heading.
+        if (vx * vx + vy * vy > 2) target = (Math.atan2(vy, vx) * 180) / Math.PI + 90;
       }
+      lastX = e.clientX;
+      lastY = e.clientY;
+    };
+
+    let last = performance.now();
+    const loop = (now: number) => {
+      raf = requestAnimationFrame(loop);
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      // Ease along the shortest arc; frame-rate independent.
+      const delta = ((target - angle + 540) % 360) - 180;
+      if (Math.abs(delta) < 0.3) return;
+      angle += delta * (1 - Math.exp(-12 * dt));
+      const idx = ((Math.round(angle) % STEPS) + STEPS) % STEPS;
+      if (idx === current) return;
+      current = idx;
+      let url = cache.get(idx);
+      if (!url) {
+        url = cursorFor(idx);
+        cache.set(idx, url);
+      }
+      root.style.setProperty("--cursor-arrow", url);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return null;
