@@ -6,6 +6,9 @@
  * Coordinates are percentages of the area right of the sidebar, so the city
  * pins (HTML) and the path (SVG, non-uniformly scaled) line up at any size.
  */
+// Pakistan is where it started; the plane is parked at the current city (SF).
+const origin = { name: "Pakistan", note: "home", x: 3, y: 64 };
+
 const cities = [
   { name: "San Francisco", note: "now", x: 10, y: 82 },
   { name: "Tokyo", note: "next", x: 45, y: 92 },
@@ -14,7 +17,7 @@ const cities = [
 ];
 
 // Short trail into SF (where the plane came from), then the route ahead.
-const trail = "M 0 70 C 4 76, 6 80, 10 82";
+const trail = "M 3 64 C 4 72, 6 79, 10 82";
 const route = [
   "M 10 82",
   "C 22 96, 34 98, 45 92", // SF -> Tokyo
@@ -58,10 +61,14 @@ export default function FlightPath() {
         </div>
       ))}
 
-      {/* Label where the trail enters */}
-      <span className="hand absolute text-[16px] leading-none text-ink/35" style={{ left: "1.5%", top: "64%" }}>
-        Minerva rotation
-      </span>
+      {/* Starting point: Pakistan */}
+      <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${origin.x}%`, top: `${origin.y}%` }}>
+        <span className="block h-3 w-3 rounded-full border-2 border-ink/60 bg-emerald-700/80" />
+        <span className="hand absolute left-1/2 top-4 -translate-x-1/2 whitespace-nowrap text-[18px] leading-none text-ink/60">
+          {origin.name}
+          <span className="ml-1 text-[14px] text-ink/40">({origin.note})</span>
+        </span>
+      </div>
 
       {/* Paper plane parked at SF, nose toward Tokyo */}
       <div
