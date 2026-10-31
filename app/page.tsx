@@ -20,7 +20,7 @@ export default function HomePage() {
             Hey, I&apos;m Shehryar
           </h1>
           {/* Bio block */}
-          <div className="mt-8 space-y-4 text-[15px] leading-[1.8] text-ink/90">
+          <div className="mt-8 space-y-4 text-[17px] leading-[1.75] text-ink/90">
             <p data-bot-say="He talks to users, writes the spec AND ships the code.">
               I build AI products end to end: talk to users, write the spec, ship the code.
             </p>
