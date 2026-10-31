@@ -139,7 +139,7 @@ body {
    the url() below is the fallback before the first mouse move.
    ============================================================ */
 html, body {
-  cursor: var(--cursor-arrow, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath transform='rotate(-35 12 12)' d='M12 2 L20 22 L12 17 L4 22 Z' fill='%230a0a0a' stroke='white' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto);
+  cursor: var(--cursor-arrow, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath transform='rotate(-35 12 12)' d='M12 3.5 L19.5 19.5 Q12 15.5 4.5 19.5 Z' fill='white' stroke='%230a0a0a' stroke-width='2.6' stroke-linejoin='round'/%3E%3C/svg%3E") 7 5, auto);
 }
 a, button, [role='button'], label, summary, select, .cursor-pointer {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Ccircle cx='11' cy='11' r='9' fill='%230a0a0a' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 11 11, pointer;
@@ -213,22 +213,7 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 /* ============================================================
    "Catch me" paper robot on Home (components/RecentlyBot.tsx)
    ============================================================ */
-/* Wander path; bot-face below flips it in sync (right for 0-40%, left after) */
-@keyframes bot-wander {
-  0%   { left: 0%;  top: 40%; }
-  20%  { left: 40%; top: 22%; }
-  40%  { left: 78%; top: 55%; }
-  60%  { left: 55%; top: 64%; }
-  80%  { left: 20%; top: 58%; }
-  100% { left: 0%;  top: 40%; }
-}
-.bot-wander { animation: bot-wander 16s ease-in-out infinite; }
-
-@keyframes bot-face {
-  0%, 39.9% { transform: scaleX(1); }
-  40%, 100% { transform: scaleX(-1); }
-}
-.bot-face { animation: bot-face 16s step-end infinite; }
+/* The robot always faces forward; it never mirrors when changing direction */
 
 /* Legs swing alternately while walking */
 .bot-leg-l, .bot-leg-r { transform-box: fill-box; transform-origin: 50% 0%; }
@@ -238,6 +223,9 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 }
 .bot-leg-l { animation: bot-step .45s ease-in-out infinite alternate; }
 .bot-leg-r { animation: bot-step .45s ease-in-out infinite alternate-reverse; }
+/* Legs stand straight when the robot is not walking */
+.robot[data-moving="false"] .bot-leg-l,
+.robot[data-moving="false"] .bot-leg-r { animation: none; }
 
 /* Blink every few seconds */
 .bot-eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: bot-blink 4s infinite; }
@@ -259,16 +247,101 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 @keyframes bot-wave-l { from { transform: rotate(88deg); }  to { transform: rotate(112deg); } }
 @keyframes bot-wave-r { from { transform: rotate(-88deg); } to { transform: rotate(-112deg); } }
 
-/* Nervous wiggle when hovered */
-.bot-wiggle { animation: bot-wiggle .3s ease-in-out infinite alternate; }
-@keyframes bot-wiggle {
-  from { transform: rotate(-6deg); }
-  to   { transform: rotate(6deg); }
+/* Reactions when it bumps into something (data-anim on .robot); tips over at its feet */
+.robot .bot-art { transform-origin: 50% 90%; }
+@keyframes bot-bump {
+  0%   { transform: translateY(0) rotate(0); }
+  30%  { transform: translateY(-22px) rotate(-8deg); }
+  60%  { transform: translateY(0) rotate(6deg); }
+  80%  { transform: translateY(-4px) rotate(-3deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@keyframes bot-fall {
+  0%   { transform: rotate(0) translateY(0); }
+  35%  { transform: rotate(-18deg) translateY(-10px); }
+  100% { transform: rotate(95deg) translateY(14px); }
+}
+/* Slides out sideways from behind the lifted polaroid */
+@keyframes bot-peek {
+  0%   { transform: translateX(22px) scale(.5); opacity: 0; }
+  70%  { transform: translateX(-3px) scale(1.08); opacity: 1; }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+.robot[data-anim="bump"] .bot-art { animation: bot-bump .55s ease-out; }
+.robot[data-anim="fall"] .bot-art { animation: bot-fall .6s ease-in forwards; }
+.robot[data-anim="hidden"] .bot-art { opacity: 0; transform: rotate(95deg) translateY(14px); }
+.robot[data-anim="peek"] .bot-art { animation: bot-peek .6s cubic-bezier(.2, .8, .2, 1.2); }
+
+/* The polaroid the robot ducks behind lifts up off the board */
+.polaroid[data-lifted="true"] {
+  transform: translateY(-40px) rotate(-16deg) scale(1.06) !important;
+  z-index: 35 !important;
+  box-shadow: 0 22px 34px -10px rgba(30, 25, 15, 0.45), 0 3px 6px rgba(30, 25, 15, 0.15);
 }
 
+/* Stuck: straining shake. Throw: leans back then flings. Climb: hand-over-hand sway. */
+@keyframes bot-strain {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25%      { transform: translateX(-2px) rotate(-3deg); }
+  75%      { transform: translateX(2px) rotate(3deg); }
+}
+@keyframes bot-throw {
+  0%   { transform: rotate(0); }
+  40%  { transform: rotate(-14deg); }
+  70%  { transform: rotate(10deg); }
+  100% { transform: rotate(0); }
+}
+@keyframes bot-climb {
+  from { transform: rotate(-7deg); }
+  to   { transform: rotate(7deg); }
+}
+/* Perched on a card: gentle bob. Napping: slow breathing, head tipped. */
+@keyframes bot-perch {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+@keyframes bot-nap {
+  from { transform: rotate(8deg) scale(1); }
+  to   { transform: rotate(8deg) scale(1.03); }
+}
+.robot[data-anim="strain"] .bot-art { animation: bot-strain .18s linear infinite; }
+.robot[data-anim="throw"] .bot-art  { animation: bot-throw .55s ease-out; }
+.robot[data-anim="climb"] .bot-art  { animation: bot-climb .28s ease-in-out infinite alternate; }
+.robot[data-anim="perch"] .bot-art  { animation: bot-perch 1.2s ease-in-out infinite alternate; }
+.robot[data-anim="nap"] .bot-art    { animation: bot-nap 1.6s ease-in-out infinite alternate; }
+
+/* The rope draws itself from the bot's hand up to the hook */
+@keyframes rope-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.rope-throw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: rope-draw .5s ease-out forwards; }
+.rope-hook  { opacity: 0; animation: rope-hook-in .1s .45s forwards; }
+@keyframes rope-hook-in { to { opacity: 1; } }
+
+/* Speech notes sit slightly askew, like taped scraps */
+.bot-note { transform: translateX(-50%) rotate(-2deg); }
+
 @media (prefers-reduced-motion: reduce) {
-  .bot-wander, .bot-face, .bot-leg-l, .bot-leg-r, .bot-eyes,
-  .bot-antenna, .bot-wiggle { animation: none; }
+  .rope-throw { animation: none; stroke-dashoffset: 0; }
+  .rope-hook  { animation: none; opacity: 1; }
+  .bot-leg-l, .bot-leg-r, .bot-eyes, .bot-antenna,
+  .robot .bot-art { animation: none !important; }
   .bot-arm-wave-l { animation: none; transform: rotate(100deg); }
   .bot-arm-wave-r { animation: none; transform: rotate(-100deg); }
+}
+
+/* ============================================================
+   Home flight path (components/FlightPath.tsx)
+   ============================================================ */
+/* Dashes drift slowly along the route, toward the next city */
+@keyframes flight-dash { to { stroke-dashoffset: -140; } }
+.flight-dash { animation: flight-dash 12s linear infinite; }
+
+/* Parked plane hovers a little */
+@keyframes plane-float {
+  from { transform: translateY(0) rotate(0deg); }
+  to   { transform: translateY(-4px) rotate(-3deg); }
+}
+.plane-float { animation: plane-float 2.4s ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flight-dash, .plane-float { animation: none; }
 }

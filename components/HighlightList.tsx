@@ -1,12 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, FileText } from "lucide-react";
 import { highlights } from "@/lib/highlights";
 
 /** Same row + "→" expand pattern as the Projects list, without images. */
 export default function HighlightList() {
   const [open, setOpen] = useState<Set<string>>(new Set());
+
+  // Open and scroll to the item named in the URL hash (e.g. from a Home polaroid).
+  useEffect(() => {
+    const openFromHash = () => {
+      const slug = decodeURIComponent(window.location.hash.slice(1));
+      if (!slug || !document.getElementById(slug)) return;
+      setOpen((s) => new Set(s).add(slug));
+      window.setTimeout(() => document.getElementById(slug)?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, []);
 
   const toggle = (slug: string) =>
     setOpen((s) => {
