@@ -65,6 +65,7 @@ export default function FlightPath() {
 
       {/* Paper plane parked at SF, nose toward Tokyo */}
       <div
+        data-bot-say="Next stop: Tokyo!"
         className="absolute -translate-x-1/2 -translate-y-[130%] rotate-[38deg]"
         style={{ left: `${sf.x}%`, top: `${sf.y}%` }}
       >
