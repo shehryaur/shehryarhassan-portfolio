@@ -29,7 +29,7 @@ export default function HighlightList() {
     });
 
   return (
-    <ul className="divide-y divide-line border-y border-line font-mono">
+    <ul className="divide-y divide-line border-y border-line">
       {highlights.map((h, i) => {
         const expanded = open.has(h.slug);
         return (
