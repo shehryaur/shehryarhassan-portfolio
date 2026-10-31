@@ -213,8 +213,7 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
 /* ============================================================
    "Catch me" paper robot on Home (components/RecentlyBot.tsx)
    ============================================================ */
-/* Faces the way it walks (--face is 1 or -1, set by the follow loop) */
-.robot .bot-facing { transform: scaleX(var(--face, 1)); transition: transform .2s ease; }
+/* The robot always faces forward; it never mirrors when changing direction */
 
 /* Legs swing alternately while walking */
 .bot-leg-l, .bot-leg-r { transform-box: fill-box; transform-origin: 50% 0%; }
