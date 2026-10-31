@@ -56,7 +56,7 @@ export default function AvatarVisionModel({ className = "h-72 w-72" }: { classNa
             isHovered ? "opacity-100" : "opacity-0"
           }`}
         >
-          {`OBJ: AI_PRODUCT_BUILDER`}
+          {`OBJ: FDE`}
         </div>
 
         <div
