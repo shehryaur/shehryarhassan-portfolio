@@ -6,8 +6,8 @@ import { highlights } from "@/lib/highlights";
 import AvatarVisionModel from "@/components/AvatarVisionModel";
 
 /**
- * Home hero: the round photo with two square polaroids tucked behind its
- * lower edge (Adobe and Ar-Razzaq). Sized to sit above the fold (320 x 350).
+ * Home hero: the round photo with four square polaroids tucked behind its
+ * corners, one per corner. Sized to sit above the fold (320 x 370).
  * Hover straightens a polaroid and brings it to the front.
  */
 type Pin = {
@@ -51,11 +51,13 @@ const pins: Pin[] = [
   })),
 ];
 
-// Only the first two pins show here (Adobe, Ar-Razzaq); the rest live on Highlights.
-// They sit behind the photo (z 0), peeking out from its lower corners.
+// Order matches pins (Adobe, Ar-Razzaq, research, gold medal). Each sits behind
+// the photo (z 0), peeking out from one corner, with a gentle tilt.
 const placements = [
-  { top: 196, left: 0, rotate: "-4deg", tape: "-3deg", z: 0 },
-  { top: 212, left: 202, rotate: "3deg", tape: "2deg", z: 0 },
+  { top: 0, left: 0, rotate: "-4deg", tape: "-3deg", z: 0 },
+  { top: 244, left: 4, rotate: "3deg", tape: "2deg", z: 0 },
+  { top: 250, left: 198, rotate: "-3deg", tape: "-2deg", z: 0 },
+  { top: 8, left: 202, rotate: "4deg", tape: "3deg", z: 0 },
 ];
 
 export default function ScatteredHighlights() {
@@ -71,9 +73,9 @@ export default function ScatteredHighlights() {
   }, []);
 
   return (
-    <div className="relative mx-auto h-[350px] w-[320px]">
+    <div className="relative mx-auto h-[370px] w-[320px]">
       {/* Round photo, centred, in front of the polaroids */}
-      <div className="absolute left-[30px] top-0 z-[1] rounded-full" data-bot-say="Looking sharp in that suit!">
+      <div className="absolute left-[30px] top-[52px] z-[1] rounded-full" data-bot-say="Looking sharp in that suit!">
         <AvatarVisionModel className="h-[260px] w-[260px]" />
       </div>
 
