@@ -21,9 +21,6 @@ export default function HomePage() {
           </h1>
           {/* Bio block */}
           <div className="mt-8 space-y-4 text-[17px] leading-[1.75] text-ink/90">
-            <p data-bot-say="He listens to users, then ships the fix. That's the FDE way!">
-              Forward deployed engineer turning real user problems into shipped AI products.
-            </p>
             <p>
               I&apos;m an undergraduate at Minerva University studying{" "}
               <span data-bot-say="Computational Sciences + Business. Both brains!" className="block w-fit pt-2 text-[23px] font-bold leading-tight text-ink md:text-[28px]">
