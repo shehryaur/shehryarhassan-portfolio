@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, ExternalLink, Github, Trophy } from "lucide-react";
 import { projects, skillGroups } from "@/lib/data";
 
@@ -9,6 +9,19 @@ const byNewest = [...projects].sort((a, b) => b.date.localeCompare(a.date));
 export default function ProjectTimeline() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [open, setOpen] = useState<Set<string>>(new Set());
+
+  // Open and scroll to the item named in the URL hash (e.g. from a Home polaroid).
+  useEffect(() => {
+    const openFromHash = () => {
+      const slug = decodeURIComponent(window.location.hash.slice(1));
+      if (!slug || !document.getElementById(slug)) return;
+      setOpen((s) => new Set(s).add(slug));
+      window.setTimeout(() => document.getElementById(slug)?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, []);
 
   // A project shows if it uses ANY checked skill; nothing checked shows all.
   const visible = useMemo(
