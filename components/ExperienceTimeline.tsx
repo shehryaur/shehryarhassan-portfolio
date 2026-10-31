@@ -62,6 +62,7 @@ export default function ExperienceTimeline() {
         {experience.map((e, i) => (
           <div
             key={i}
+            id={e.company.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
             ref={(el) => {
               rowRefs.current[i] = el;
             }}
