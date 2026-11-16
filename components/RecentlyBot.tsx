@@ -6,6 +6,8 @@ import { Trophy } from "lucide-react";
 
 /** What the bot says once caught; each item links to its project. */
 const recently = [
+  { text: "2nd place, AIE Code Summit Hackathon", href: "/projects#lanes" },
+  { text: "3rd place, Hack the Feed Hackathon", href: "/projects#overcrank" },
   { text: "1st place, Google x k-ID Hackathon", href: "/projects#curio" },
   { text: "Winner, SF Hacks x GDG Hackathon at SFSU", href: "/projects#planed" },
 ];
@@ -26,7 +28,7 @@ const NAP_AFTER_MS = 8000;
 const navTips: Record<string, string> = {
   "/": "You're already home!",
   "/projects": "Try the Go filter on Projects!",
-  "/highlights": "A non-profit, a paper, a gold medal.",
+  "/highlights": "Adobe strategy, a non-profit, a paper, a gold medal.",
   "/experience": "Adobe, Blackmont, Skill Craft. Busy guy!",
   "/contact": "He reads every note. Say hi!",
 };
