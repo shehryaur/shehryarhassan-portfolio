@@ -22,34 +22,21 @@ type Pin = {
 
 /** Robot lines for the highlight polaroids, by highlight slug. */
 const robotLines: Record<string, string> = {
+  "adobe-ai-product-strategy": "Worked with a Product Manager at Adobe, wow!",
   "ar-razzaq-foundation": "He co-founded a non-profit. PKR 2M+ raised!",
   "lead-academic-researcher": "A published researcher, too? Nice.",
   "national-academic-gold-medal": "Top of the whole province. Gold medal!",
 };
 
-/** Adobe lives under Experience, so its polaroid links there. */
-const adobe: Pin = {
-  key: "adobe",
-  href: "/experience#adobe",
-  image: "/highlight-adobe-ai.jpg",
-  alt: "Adobe",
-  caption: "Adobe x Minerva",
-  note: "AI Product Strategist · 2025-26",
-  say: "Worked with a Product Manager at Adobe, wow!",
-};
-
-const pins: Pin[] = [
-  adobe,
-  ...highlights.map((h) => ({
-    key: h.slug,
-    href: `/highlights#${h.slug}`,
-    image: h.image,
-    alt: h.title,
-    caption: h.shortTitle,
-    note: h.context,
-    say: robotLines[h.slug] ?? h.context,
-  })),
-];
+const pins: Pin[] = highlights.map((h) => ({
+  key: h.slug,
+  href: `/highlights#${h.slug}`,
+  image: h.image,
+  alt: h.title,
+  caption: h.shortTitle,
+  note: h.context,
+  say: robotLines[h.slug] ?? h.context,
+}));
 
 // Order matches pins: Adobe and the medal pinned to the photo's lower corners,
 // Ar-Razzaq and the research paper in a loose row underneath.
@@ -87,7 +74,7 @@ export default function ScatteredHighlights() {
             href={h.href}
             title={h.note}
             data-bot-say={h.say}
-            data-bot-act={h.key === "adobe" ? "lift" : "climb"}
+            data-bot-act={h.key === "adobe-ai-product-strategy" ? "lift" : "climb"}
             data-pin-key={h.key}
             data-lifted={lifted === h.key ? "true" : undefined}
             style={{ top: p.top, left: p.left, ["--tilt" as string]: p.rotate, zIndex: p.z }}
