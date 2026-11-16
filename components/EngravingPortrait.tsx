@@ -4,14 +4,19 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Procedural intaglio banknote engraving shader inspired by fana-ai.com.
- * Renders the portrait as still, crisp vector strokes with 3D spatial depth,
- * continuous edge-tangent flow, and classical intaglio cross-hatching.
+ * Renders the portrait as a wide, still background mountain silhouette anchored to the bottom-right.
  * Motionless / still rendering with zero GPU churn after the initial frame.
  */
 export default function EngravingPortrait({
   className = "",
+  offsetX = 0.08,
+  offsetY = -0.06,
+  scale = 1.25,
 }: {
   className?: string;
+  offsetX?: number;
+  offsetY?: number;
+  scale?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -45,7 +50,8 @@ export default function EngravingPortrait({
 
     uniform sampler2D uTex;
     uniform int uGW, uGH;
-    uniform float uViewAspect, uCover, uSpacing, uPush;
+    uniform float uViewAspect, uCover, uSpacing, uPush, uScale;
+    uniform vec2 uOffset;
 
     out float vInk;
     out float vAngle;
@@ -68,29 +74,38 @@ export default function EngravingPortrait({
       // Vector stroke angle extracted from local image structure tensor:
       vAngle = normAngle * 3.14159265;
 
-      // 3D positioning with depth projection (straight-on, completely still):
+      // 3D positioning with depth projection (still camera, zero rotation or drift):
       float aspect = float(uGW) / float(uGH);
       vec3 p = vec3(
-        (float(cell.x) / float(uGW - 1) - 0.5) * 2.0 * aspect,
-        (0.5 - float(cell.y) / float(uGH - 1)) * 2.0,
+        ((float(cell.x) / float(uGW - 1) - 0.5) * 2.0 * aspect + uOffset.x) * uScale,
+        ((0.5 - float(cell.y) / float(uGH - 1)) * 2.0 + uOffset.y) * uScale,
         (depth - 0.5) * 0.70 + uPush
       );
 
-      // Perspective projection (still camera, zero rotation or drift):
+      // Perspective projection:
       float D = 3.2;
       float fl = D / 0.95;
       float w = D - p.z;
       vec2 ndc = vec2(p.x * fl * uCover / uViewAspect, p.y * fl * uCover) / w;
       gl_Position = vec4(ndc, 0.0, 1.0);
 
-      // Banknote edge fade into background:
-      float band = smoothstep(1.0, 0.65, abs(ndc.x)) * smoothstep(1.02, 0.78, abs(ndc.y));
-      ink *= band;
+      // Background fade:
+      // Soft feather on the left where it meets the text column:
+      float fadeLeft = smoothstep(-0.80, -0.15, ndc.x);
+      // Bleed freely to the right edge ("go till the end of the side"):
+      float fadeRight = smoothstep(1.08, 0.96, ndc.x);
+      // Soft fade at the top above the hair:
+      float fadeTop = smoothstep(1.0, 0.72, ndc.y);
+      // Bleed all the way to the bottom edge ("like a wide mountain kind of thing from the bottom"):
+      float fadeBottom = 1.0;
+
+      float fade = fadeLeft * fadeRight * fadeTop * fadeBottom;
+      ink *= fade;
 
       vInk = ink;
 
       // Point size scaled with perspective:
-      float size = uSpacing * 2.5 * (D / w);
+      float size = uSpacing * 2.4 * uScale * (D / w);
       if (ink < 0.035) size = 0.0;
       gl_PointSize = size;
     }
@@ -128,7 +143,8 @@ export default function EngravingPortrait({
       float a = (0.35 + 0.65 * vInk) * (1.0 - smoothstep(-aa, aa, d));
       if (a < 0.01) discard;
 
-      o = vec4(uInkColor, a);
+      // Subtle editorial ink opacity so it sits gracefully as a background
+      o = vec4(uInkColor, a * 0.95);
     }
     `;
 
@@ -173,6 +189,8 @@ export default function EngravingPortrait({
     const uCover = gl.getUniformLocation(prog, "uCover");
     const uSpacing = gl.getUniformLocation(prog, "uSpacing");
     const uPush = gl.getUniformLocation(prog, "uPush");
+    const uScale = gl.getUniformLocation(prog, "uScale");
+    const uOffset = gl.getUniformLocation(prog, "uOffset");
     const uInkColor = gl.getUniformLocation(prog, "uInkColor");
 
     gl.uniform1i(uTex, 0);
@@ -181,6 +199,8 @@ export default function EngravingPortrait({
     // Charcoal ink color matching #0a0a0a
     gl.uniform3f(uInkColor, 0.04, 0.04, 0.04);
     gl.uniform1f(uPush, 0.0);
+    gl.uniform1f(uScale, scale);
+    gl.uniform2f(uOffset, offsetX, offsetY);
 
     // Alpha blending
     gl.enable(gl.BLEND);
@@ -223,6 +243,8 @@ export default function EngravingPortrait({
       gl.uniform1f(uViewAspect, viewAspect);
       gl.uniform1f(uCover, cover);
       gl.uniform1f(uSpacing, spacing);
+      gl.uniform1f(uScale, scale);
+      gl.uniform2f(uOffset, offsetX, offsetY);
 
       gl.drawArrays(gl.POINTS, 0, GW * GH);
     };
@@ -251,20 +273,10 @@ export default function EngravingPortrait({
       gl.deleteTexture(texture);
       gl.deleteVertexArray(vao);
     };
-  }, []);
+  }, [offsetX, offsetY, scale]);
 
   if (!supported) {
-    // Fallback to static portrait if WebGL2 is unsupported
-    return (
-      <div className={`relative overflow-hidden rounded-2xl border border-line bg-surface shadow-sm ${className}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/avatar.webp"
-          alt="Shehryar Hassan"
-          className="h-full w-full object-cover object-[50%_20%]"
-        />
-      </div>
-    );
+    return null;
   }
 
   return (
