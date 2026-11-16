@@ -1,17 +1,17 @@
-import { site } from "@/lib/data";
+import EngravingPortrait from "@/components/EngravingPortrait";
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="pt-2">
       {/* Hero Section */}
-      <section className="flex flex-col-reverse gap-8 md:flex-row md:items-start md:justify-between">
+      <section className="flex flex-col-reverse gap-8 md:grid md:grid-cols-[1fr_360px] md:items-center md:gap-8">
         <div className="max-w-xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[12px] font-medium text-mute">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             Minerva University · San Francisco, CA
           </div>
 
-          <h1 className="mt-4 text-[40px] font-bold tracking-tight text-ink sm:text-[48px] leading-[1.08]">
+          <h1 className="mt-5 text-[40px] font-bold tracking-tight text-ink sm:text-[48px] leading-[1.08]">
             Hey, I&apos;m Shehryar
           </h1>
 
@@ -28,15 +28,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Clean Portrait */}
-        <div className="shrink-0">
-          <div className="relative h-44 w-44 overflow-hidden rounded-2xl border border-line bg-surface shadow-sm sm:h-52 sm:w-52 md:h-56 md:w-56">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={site.avatar}
-              alt={site.fullName}
-              className="h-full w-full object-cover object-[50%_20%]"
-            />
+        {/* Moving Vector / Banknote Engraving Portrait */}
+        <div className="flex justify-center md:justify-end">
+          <div className="relative h-[440px] w-[300px] sm:h-[500px] sm:w-[340px] md:h-[560px] md:w-[360px]">
+            <EngravingPortrait className="h-full w-full" />
           </div>
         </div>
       </section>
