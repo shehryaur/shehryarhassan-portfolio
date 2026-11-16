@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { Caveat } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import MobileTopBar from "@/components/MobileTopBar";
 import AmbientLight from "@/components/AmbientLight";
-import DirectionalCursor from "@/components/DirectionalCursor";
-
-// Handwriting accent font, exposed as --font-hand for the .hand class.
-const hand = Caveat({ subsets: ["latin"], weight: ["600"], variable: "--font-hand" });
 
 export const metadata: Metadata = {
   title: "Shehryar Hassan - AI Product Builder",
@@ -33,11 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={hand.variable}>
+    <html lang="en">
       <body className="min-h-screen flex flex-col bg-page text-ink antialiased">
         {/* Ambient light behind everything (z-0). */}
         <AmbientLight />
-        <DirectionalCursor />
 
         {/* Sidebar / mobile top bar (z-30). */}
         <Sidebar />
