@@ -59,7 +59,7 @@ export default function ProjectTimeline() {
         </div>
         {skillGroups.map((group) => (
           <div key={group.label} className="mt-2.5">
-            <h3 className="hand px-2 text-[16px] leading-none text-ink/60">
+            <h3 className="px-2 font-mono text-[11px] uppercase tracking-wider text-mute">
               {group.label}
             </h3>
             <ul className="mt-0.5 flex flex-wrap gap-1 md:flex-col md:gap-0">
@@ -140,13 +140,7 @@ export default function ProjectTimeline() {
 
                 {expanded && (
                   <div className="pb-7 pt-1">
-                    {/* Details open as a taped paper note with a slight tilt */}
-                    <div
-                      className="unfold paper tape tilt rounded-sm px-5 pb-5 pt-6 font-sans"
-                      style={{
-                        ["--tilt" as string]: i % 2 ? "0.5deg" : "-0.5deg",
-                      }}
-                    >
+                    <div className="unfold rounded-lg border border-line bg-surface p-6 font-sans shadow-xs">
                       <p className="text-[12.5px] text-mute">
                         My role: {p.role}
                       </p>
@@ -163,14 +157,14 @@ export default function ProjectTimeline() {
                         ))}
                       </ul>
 
-                      <h4 className="hand mt-4 text-[19px] leading-none text-ink">
+                      <h4 className="mt-5 font-mono text-[11px] font-semibold uppercase tracking-wider text-mute">
                         Problem
                       </h4>
                       <p className="mt-1 text-[13.5px] leading-relaxed text-ink/80">
                         {p.problem}
                       </p>
 
-                      <h4 className="hand mt-4 text-[19px] leading-none text-ink">
+                      <h4 className="mt-5 font-mono text-[11px] font-semibold uppercase tracking-wider text-mute">
                         What I built
                       </h4>
                       <ul className="mt-1 space-y-1 text-[13.5px] text-ink/80">
