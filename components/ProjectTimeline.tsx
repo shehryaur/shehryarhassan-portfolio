@@ -41,9 +41,9 @@ export default function ProjectTimeline() {
   return (
     // md:-mb-14 cancels <main>'s bottom padding so this grid reaches the page
     // bottom; otherwise the sticky filter gets pushed up at full scroll.
-    <div className="grid gap-8 md:-mb-14 md:grid-cols-[170px_1fr]">
+    <div className="grid gap-8 md:-mb-14 md:grid-cols-[1fr_170px]">
       {/* ---------- Skills filter (compact rows so it fits without scrolling) ---------- */}
-      <aside className="md:sticky md:top-10 md:-ml-14 md:h-fit">
+      <aside className="order-1 md:order-2 md:sticky md:top-10 md:h-fit">
         <div className="flex items-center justify-between">
           <h2 className="text-[12px] font-medium uppercase tracking-wider text-soft">
             Tech stack
@@ -98,7 +98,7 @@ export default function ProjectTimeline() {
       </aside>
 
       {/* ---------- Project list ---------- */}
-      <div className="md:pb-14">
+      <div className="order-2 md:order-1 md:pb-14">
         <ul className="divide-y divide-line border-y border-line font-mono">
           {visible.map((p, i) => {
             const expanded = open.has(p.slug);
