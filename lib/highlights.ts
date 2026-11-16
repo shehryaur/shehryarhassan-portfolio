@@ -11,6 +11,24 @@ export type HighlightItem = {
 
 export const highlights: HighlightItem[] = [
   {
+    slug: "adobe-ai-product-strategy",
+    shortTitle: "Adobe x Minerva",
+    context: "AI Product Strategist · 2025-26",
+    title: "Adobe AI Product Strategy",
+    image: "/highlight-adobe-ai.jpg",
+    summary:
+      "Led user discovery and authored a 33-page AI product strategy for Adobe Life PM leadership, designing a 3-layer LLM pipeline for workplace communications.",
+    details: [
+      "Partnered with Adobe PM leadership across a year-long Minerva University collaboration.",
+      "Specced and prototyped a 3-layer LLM triage pipeline ranking Slack and Teams communications.",
+      "Designed and validated high-fidelity interaction flows with A/B testing in Figma.",
+    ],
+    pdfs: [
+      { title: "Strategy deck (PDF)", href: "/adobe-ai-product-strategy-original.pdf" },
+      { title: "PRD summary (PDF)", href: "/adobe-ai-product-summary-prd.pdf" },
+    ],
+  },
+  {
     slug: "ar-razzaq-foundation",
     shortTitle: "Ar-Razzaq",
     context: "Non-profit · PKR 2M+ raised",
