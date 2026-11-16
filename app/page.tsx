@@ -5,12 +5,7 @@ export default function HomePage() {
     <div className="relative">
       {/* Hero Foreground Content */}
       <div className="relative z-10 max-w-xl pt-2">
-        <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[12px] font-medium text-mute">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          Minerva University · San Francisco, CA
-        </div>
-
-        <h1 className="mt-5 text-[40px] font-bold tracking-tight text-ink sm:text-[48px] leading-[1.08]">
+        <h1 className="text-[40px] font-bold tracking-tight text-ink sm:text-[48px] leading-[1.08]">
           Hey, I&apos;m Shehryar
         </h1>
 
@@ -23,6 +18,9 @@ export default function HomePage() {
             <span className="block pt-2 text-[22px] font-bold leading-tight text-ink md:text-[26px]">
               Computational Sciences <span className="text-ink/55">and</span> Business.
             </span>
+          </p>
+          <p className="pt-1 text-[15px] text-mute">
+            Rotating across Pakistan, San Francisco, Tokyo, Buenos Aires, Berlin.
           </p>
         </div>
       </div>
