@@ -29,34 +29,44 @@ const connect = [
   { href: site.socials.instagram, label: "Instagram", icon: Instagram },
 ];
 
+const timeline = [
+  { year: "2025", location: "Hasanabdal, Pakistan" },
+  { year: "2026", location: "San Francisco, USA" },
+  { year: "2027", location: "Tokyo, Japan" },
+  { year: "2028", location: "Buenos Aires, Argentina" },
+  { year: "2029", location: "Berlin – San Francisco" },
+];
+
 export default function Sidebar() {
   const pathname = usePathname();
 
   return (
     <aside className="fixed left-0 top-0 z-30 hidden h-screen w-[300px] flex-col border-r border-line bg-page/80 px-5 py-7 backdrop-blur-sm md:flex">
       {/* Nav */}
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto pr-1">
-        {nav.map((item) => {
-          const active =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.href);
-          const Icon = item.icon;
+      <nav className="flex flex-1 flex-col overflow-y-auto pr-1">
+        <div className="flex flex-col gap-0.5">
+          {nav.map((item) => {
+            const active =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+            const Icon = item.icon;
 
-          return (
-            <div key={item.href}>
-              <Link
-                href={item.href}
-                className={`flex items-center gap-3 rounded-xl px-3 py-3 text-[15px] transition-colors ${
-                  active ? "bg-ink text-white" : "text-ink/85 hover:bg-subtle"
-                }`}
-              >
-                <Icon size={18} strokeWidth={active ? 2.25 : 1.75} />
-                <span>{item.label}</span>
-              </Link>
-            </div>
-          );
-        })}
+            return (
+              <div key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-3 text-[15px] transition-colors ${
+                    active ? "bg-ink text-white" : "text-ink/85 hover:bg-subtle"
+                  }`}
+                >
+                  <Icon size={18} strokeWidth={active ? 2.25 : 1.75} />
+                  <span>{item.label}</span>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
 
         {/* Connect */}
         <div className="mt-7">
@@ -80,6 +90,25 @@ export default function Sidebar() {
                 </a>
               );
             })}
+          </div>
+        </div>
+
+        {/* Rotation Timeline at bottom left */}
+        <div className="mt-auto pt-8">
+          <div className="space-y-1.5 px-2">
+            {timeline.map((item) => (
+              <div
+                key={item.year}
+                className="flex items-baseline gap-2.5 text-[12.5px] leading-tight"
+              >
+                <span className="font-mono text-[11px] text-mute shrink-0 tabular-nums">
+                  {item.year}
+                </span>
+                <span className="text-ink/75 truncate">
+                  {item.location}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </nav>
