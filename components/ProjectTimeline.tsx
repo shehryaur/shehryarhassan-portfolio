@@ -23,12 +23,14 @@ export default function ProjectTimeline() {
     return () => window.removeEventListener("hashchange", openFromHash);
   }, []);
 
-  // A project shows if it uses ANY checked skill; nothing checked shows all.
+  // A project shows only if it includes ALL checked skills (AND matching); nothing checked shows all.
   const visible = useMemo(
     () =>
       selected.size === 0
         ? byNewest
-        : byNewest.filter((p) => p.skills.some((s) => selected.has(s))),
+        : byNewest.filter((p) =>
+            Array.from(selected).every((s) => p.skills.includes(s)),
+          ),
     [selected],
   );
 
@@ -99,7 +101,20 @@ export default function ProjectTimeline() {
 
       {/* ---------- Project list ---------- */}
       <div className="order-2 md:order-1 md:pb-14">
-        <ul className="divide-y divide-line border-y border-line font-mono">
+        {visible.length === 0 ? (
+          <div className="rounded-lg border border-line bg-surface p-8 text-center font-mono shadow-xs">
+            <p className="text-[14px] text-mute">
+              No projects match all selected filters.
+            </p>
+            <button
+              onClick={() => setSelected(new Set())}
+              className="mt-3 text-[13px] font-semibold text-ink underline underline-offset-2 hover:opacity-80"
+            >
+              Clear filters
+            </button>
+          </div>
+        ) : (
+          <ul className="divide-y divide-line border-y border-line font-mono">
           {visible.map((p, i) => {
             const expanded = open.has(p.slug);
             return (
@@ -225,6 +240,7 @@ export default function ProjectTimeline() {
             );
           })}
         </ul>
+        )}
       </div>
     </div>
   );
