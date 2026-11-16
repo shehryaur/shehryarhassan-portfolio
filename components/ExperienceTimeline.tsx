@@ -71,7 +71,7 @@ export default function ExperienceTimeline() {
           >
             {/* Date column */}
             <div className="md:pt-1 md:text-right">
-              <div className="hand text-[19px] leading-tight text-ink/70">
+              <div className="font-mono text-[14px] font-semibold leading-tight text-ink/90">
                 {e.period}
               </div>
               <div className="mt-0.5 text-[12px] leading-snug text-soft">
@@ -107,11 +107,8 @@ export default function ExperienceTimeline() {
               />
             </div>
 
-            {/* Body: a taped paper card, alternating tilt, straightens on hover */}
-            <div
-              className="paper tape tilt rounded-sm px-5 pb-5 pt-6"
-              style={{ ["--tilt" as string]: i % 2 ? "0.6deg" : "-0.6deg" }}
-            >
+            {/* Body: clean editorial card */}
+            <div className="rounded-lg border border-line bg-surface p-6 shadow-xs">
               <h3 className="text-[17px] font-semibold text-ink">
                 {e.role}{" "}
                 <span className="text-mute">· {e.company}</span>
