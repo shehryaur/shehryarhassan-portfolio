@@ -36,11 +36,85 @@ export const skillGroups: { label: string; skills: string[] }[] = [
   { label: "Languages", skills: ["Python", "TypeScript", "JavaScript", "Go"] },
   { label: "Frontend", skills: ["React", "Next.js", "Three.js"] },
   { label: "Backend", skills: ["Node.js", "Express", "FastAPI"] },
-  { label: "Data", skills: ["PostgreSQL", "Supabase", "ClickHouse"] },
+  { label: "Data", skills: ["PostgreSQL", "Supabase", "ClickHouse", "SQLite"] },
   { label: "Tools", skills: ["Chrome Extensions", "PostHog", "Semgrep"] },
 ];
 
 export const projects: Project[] = [
+  {
+    slug: "vexl",
+    context: "YC Vexo Hacks Hackathon",
+    name: "Vexl",
+    role: "Developer",
+    period: "Nov 2026",
+    date: "2026-11-14",
+    summary:
+      "A voice-first symptom diary and visit recorder on the Vexo smartband that converts speech into clinical notes.",
+    results: [
+      "Zero cloud calls: all speech recognition and note drafting run locally on-device.",
+      "Exports encrypted patient encounters directly to FHIR, IPS, and CSV standards.",
+    ],
+    problem:
+      "Symptom diaries are tedious to type when sick, while doctors spend visits typing EHR notes instead of listening to patients.",
+    built: [
+      "Streamed 16 kHz BLE audio to faster-whisper and Gemma (12B & 4B) to log symptoms and draft SOAP notes.",
+      "Built a doctor approval step so no visit note saves to the chart without clinician sign-off.",
+      "Sealed records client-side with AES-GCM before syncing to the backend vault.",
+    ],
+    skills: ["Python", "JavaScript", "SQLite", "Gemma", "Whisper", "BLE"],
+    repo: "https://github.com/shehryaur/vexo-hack",
+    image: "/vexl.jpg",
+  },
+  {
+    slug: "lanes",
+    context: "2nd Place, AIE Code Summit Hackathon",
+    name: "Lanes",
+    role: "Developer",
+    period: "Nov 2026",
+    date: "2026-11-08",
+    award: "2nd Place, AIE Code Summit Hackathon (Cerebral Valley)",
+    summary:
+      "Routes coding agent requests to the cheapest model and thinking budget without breaking the prompt cache.",
+    results: [
+      "Saved 18% in multi-turn token costs while matching 100% high-thinking quality.",
+      "Avoided 40% cost spikes caused by naive model switching that thrashes KV cache.",
+    ],
+    problem:
+      "Most coding agent requests are simple, but switching models mid-conversation wipes the prompt cache and re-reads full history at full price.",
+    built: [
+      "Used SubQ Snap to classify turns into one-shot, straightforward, or complex lanes mapped to low, medium, or high thinking.",
+      "Kept the complex lane's KV cache warm by appending cheap turns at input pricing to its persistent thread.",
+      "Distilled common git operations into a local 1.5B model fine-tuned with LoRA on Apple Silicon.",
+    ],
+    skills: ["Python", "TypeScript", "Node.js", "Prompt Caching", "SubQ Snap", "LoRA"],
+    repo: "https://github.com/shehryaur/aie-hack",
+    image: "/lanes.png",
+  },
+  {
+    slug: "overcrank",
+    context: "3rd Place, Hack the Feed Hackathon",
+    name: "Overcrank",
+    role: "Developer",
+    period: "Nov 2026",
+    date: "2026-11-07",
+    award: "3rd Place, Hack the Feed Hackathon",
+    summary:
+      "Format arbitrage tool for short-form video that aligns raw takes to high-performing edit physics.",
+    results: [
+      "Won 3rd place at the Hack the Feed hackathon.",
+      "Generates auto-conformed starter timelines and Compound packs directly from raw footage.",
+    ],
+    problem:
+      "Creators copy vague advice like 'hook faster' instead of measurable format physics like cut density, focal push, and dead air.",
+    built: [
+      "Built telemetry pipelines with OpenCV and PySceneDetect to score cut density and rhythm against top Shorts.",
+      "Automated take conformity using FFmpeg and auto-editor to punch in and trim dead air.",
+      "Exported complete Compound.mov project packs with video assets, editorial briefs, and starter code.",
+    ],
+    skills: ["Python", "FastAPI", "React", "OpenCV", "FFmpeg", "Claude API"],
+    repo: "https://github.com/shehryaur/Overcrank",
+    image: "/overcrank.png",
+  },
   {
     slug: "curio",
     context: "1st Place, Google x k-ID Hackathon",
