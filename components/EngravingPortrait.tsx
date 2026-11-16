@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Procedural intaglio banknote engraving shader inspired by fana-ai.com.
- * Renders the portrait as thousands of animated vector strokes with 3D spatial depth,
- * continuous edge-tangent flow, harmonic drift, and real-time mouse parallax.
+ * Renders the portrait as still, crisp vector strokes with 3D spatial depth,
+ * continuous edge-tangent flow, and classical intaglio cross-hatching.
+ * Motionless / still rendering with zero GPU churn after the initial frame.
  */
 export default function EngravingPortrait({
   className = "",
@@ -44,21 +45,13 @@ export default function EngravingPortrait({
 
     uniform sampler2D uTex;
     uniform int uGW, uGH;
-    uniform float uTime, uViewAspect, uCover, uSpacing, uPush, uDrift;
-    uniform vec2 uCam;
+    uniform float uViewAspect, uCover, uSpacing, uPush;
 
     out float vInk;
     out float vAngle;
 
-    float hash(int n) {
-      uint x = uint(n) * 747796405u + 2891336453u;
-      x = ((x >> ((x >> 28u) + 4u)) ^ x) * 277803737u;
-      return float((x >> 22u) ^ x) / 4294967295.0;
-    }
-
     void main() {
       ivec2 cell = ivec2(gl_VertexID % uGW, gl_VertexID / uGW);
-      float rnd = hash(gl_VertexID);
 
       vec4 data = texelFetch(uTex, cell, 0);
       float luma = data.r;
@@ -75,25 +68,15 @@ export default function EngravingPortrait({
       // Vector stroke angle extracted from local image structure tensor:
       vAngle = normAngle * 3.14159265;
 
-      // 3D positioning with depth projection:
+      // 3D positioning with depth projection (straight-on, completely still):
       float aspect = float(uGW) / float(uGH);
       vec3 p = vec3(
         (float(cell.x) / float(uGW - 1) - 0.5) * 2.0 * aspect,
         (0.5 - float(cell.y) / float(uGH - 1)) * 2.0,
-        (depth - 0.5) * 0.75 + uPush
+        (depth - 0.5) * 0.70 + uPush
       );
 
-      // Living organic harmonic drift (banknote shimmer):
-      p.x += sin(uTime * 0.85 + rnd * 37.0) * 0.0022 * uDrift;
-      p.y += cos(uTime * 0.75 + rnd * 29.0) * 0.0022 * uDrift;
-
-      // 3D Mouse Parallax rotation (yaw & pitch):
-      float cy = cos(uCam.x), sy = sin(uCam.x);
-      p.xz = mat2(cy, -sy, sy, cy) * p.xz;
-      float cp = cos(uCam.y), sp = sin(uCam.y);
-      p.yz = mat2(cp, -sp, sp, cp) * p.yz;
-
-      // Perspective projection:
+      // Perspective projection (still camera, zero rotation or drift):
       float D = 3.2;
       float fl = D / 0.95;
       float w = D - p.z;
@@ -186,13 +169,10 @@ export default function EngravingPortrait({
     const uTex = gl.getUniformLocation(prog, "uTex");
     const uGW = gl.getUniformLocation(prog, "uGW");
     const uGH = gl.getUniformLocation(prog, "uGH");
-    const uTime = gl.getUniformLocation(prog, "uTime");
     const uViewAspect = gl.getUniformLocation(prog, "uViewAspect");
     const uCover = gl.getUniformLocation(prog, "uCover");
     const uSpacing = gl.getUniformLocation(prog, "uSpacing");
     const uPush = gl.getUniformLocation(prog, "uPush");
-    const uDrift = gl.getUniformLocation(prog, "uDrift");
-    const uCam = gl.getUniformLocation(prog, "uCam");
     const uInkColor = gl.getUniformLocation(prog, "uInkColor");
 
     gl.uniform1i(uTex, 0);
@@ -200,7 +180,6 @@ export default function EngravingPortrait({
     gl.uniform1i(uGH, GH);
     // Charcoal ink color matching #0a0a0a
     gl.uniform3f(uInkColor, 0.04, 0.04, 0.04);
-    gl.uniform1f(uDrift, 1.0);
     gl.uniform1f(uPush, 0.0);
 
     // Alpha blending
@@ -217,41 +196,15 @@ export default function EngravingPortrait({
     img.src = "/avatar-engraving.png?v=2";
 
     let textureLoaded = false;
-    img.onload = () => {
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      textureLoaded = true;
-    };
-
-    // Mouse parallax tracking
-    let targetCamX = 0;
-    let targetCamY = 0;
-    let camX = 0;
-    let camY = 0;
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const nx = (e.clientX - (rect.left + rect.width / 2)) / (window.innerWidth * 0.5);
-      const ny = (e.clientY - (rect.top + rect.height / 2)) / (window.innerHeight * 0.5);
-      targetCamX = Math.max(-0.25, Math.min(0.25, nx * 0.22));
-      targetCamY = Math.max(-0.20, Math.min(0.20, -ny * 0.18));
-    };
-
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
-
-    let animId = 0;
-    const startTime = performance.now();
 
     const render = () => {
-      if (!canvas || !gl) return;
+      if (!canvas || !gl || !textureLoaded) return;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const displayW = Math.round(canvas.clientWidth * dpr);
       const displayH = Math.round(canvas.clientHeight * dpr);
+
+      if (displayW === 0 || displayH === 0) return;
 
       if (canvas.width !== displayW || canvas.height !== displayH) {
         canvas.width = displayW;
@@ -262,35 +215,36 @@ export default function EngravingPortrait({
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
 
-      if (textureLoaded) {
-        const time = (performance.now() - startTime) * 0.001;
+      const viewAspect = canvas.clientWidth / canvas.clientHeight;
+      const imgAspect = GW / GH;
+      const cover = Math.max(1, viewAspect / imgAspect);
+      const spacing = (canvas.clientHeight * dpr * cover) / GH;
 
-        // Smooth camera interpolation
-        camX += (targetCamX - camX) * 0.06;
-        camY += (targetCamY - camY) * 0.06;
+      gl.uniform1f(uViewAspect, viewAspect);
+      gl.uniform1f(uCover, cover);
+      gl.uniform1f(uSpacing, spacing);
 
-        const viewAspect = canvas.clientWidth / canvas.clientHeight;
-        const imgAspect = GW / GH;
-        const cover = Math.max(1, viewAspect / imgAspect);
-        const spacing = (canvas.clientHeight * dpr * cover) / GH;
-
-        gl.uniform1f(uTime, time);
-        gl.uniform1f(uViewAspect, viewAspect);
-        gl.uniform1f(uCover, cover);
-        gl.uniform1f(uSpacing, spacing);
-        gl.uniform2f(uCam, camX, camY);
-
-        gl.drawArrays(gl.POINTS, 0, GW * GH);
-      }
-
-      animId = requestAnimationFrame(render);
+      gl.drawArrays(gl.POINTS, 0, GW * GH);
     };
 
-    animId = requestAnimationFrame(render);
+    img.onload = () => {
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      textureLoaded = true;
+      render();
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      render();
+    });
+    resizeObserver.observe(container);
 
     return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("mousemove", onMouseMove);
+      resizeObserver.disconnect();
       gl.deleteProgram(prog);
       gl.deleteShader(vs);
       gl.deleteShader(fs);
