@@ -73,15 +73,11 @@ export default function HighlightList() {
 
             {expanded && (
               <div className="pb-7 pt-1">
-                {/* Details open as a taped paper note with a slight tilt */}
-                <div
-                  className="unfold paper tape tilt rounded-sm px-5 pb-5 pt-6 font-sans"
-                  style={{ ["--tilt" as string]: i % 2 ? "0.5deg" : "-0.5deg" }}
-                >
+                <div className="unfold rounded-lg border border-line bg-surface p-6 font-sans shadow-xs">
                   <p className="text-[14px] leading-relaxed text-ink/85">
                     {h.summary}
                   </p>
-                  <ul className="mt-3 space-y-1 text-[13.5px] text-ink/80">
+                  <ul className="mt-3 space-y-1.5 text-[13.5px] text-ink/80">
                     {h.details.map((d) => (
                       <li key={d} className="flex gap-2">
                         <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink/50" />
@@ -98,7 +94,7 @@ export default function HighlightList() {
                           href={pdf.href}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-3 py-1.5 text-[12.5px] font-medium text-ink hover:bg-subtle"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-line bg-page px-3 py-1.5 text-[12.5px] font-medium text-ink hover:bg-subtle"
                         >
                           <FileText size={12.5} /> {pdf.title}
                         </a>
