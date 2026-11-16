@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, FileText } from "lucide-react";
 import { highlights } from "@/lib/highlights";
 
-/** Same row + "→" expand pattern as the Projects list, without images. */
+/** Same row + "→" expand pattern as the Projects list, with logo on the left. */
 export default function HighlightList() {
   const [open, setOpen] = useState<Set<string>>(new Set());
 
@@ -44,14 +44,26 @@ export default function HighlightList() {
               aria-expanded={expanded}
               className="group flex w-full items-center justify-between gap-4 py-5 text-left"
             >
-              <span className="min-w-0">
-                <span className="block text-[17px] font-bold text-ink transition-transform duration-300 group-hover:translate-x-1">
-                  {h.title}
-                </span>
-                <span className="mt-1 block text-[13px] text-mute">
-                  {h.context}
-                </span>
-              </span>
+              <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
+                {h.image && (
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-line bg-surface p-1.5 flex items-center justify-center transition-colors group-hover:border-ink/20">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={h.image}
+                      alt={`${h.title} logo`}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <span className="block text-[17px] font-bold text-ink transition-transform duration-300 group-hover:translate-x-1">
+                    {h.title}
+                  </span>
+                  <span className="mt-1 block text-[13px] text-mute">
+                    {h.context}
+                  </span>
+                </div>
+              </div>
               <ArrowRight
                 size={18}
                 aria-label={expanded ? "Hide details" : "Show details"}
