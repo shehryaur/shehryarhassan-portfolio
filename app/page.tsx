@@ -11,16 +11,13 @@ export default function HomePage() {
 
         <div className="mt-6 space-y-4 text-[16px] leading-[1.8] text-ink/85">
           <p>
-            I build AI products end to end: talk to users, write the spec, ship the code.
+            Turning code into products people actually use.
           </p>
           <p>
             I&apos;m an undergraduate at Minerva University studying{" "}
             <span className="block pt-2 text-[22px] font-bold leading-tight text-ink md:text-[26px]">
               Computational Sciences <span className="text-ink/55">and</span> Business.
             </span>
-          </p>
-          <p className="pt-1 text-[15px] text-mute">
-            Rotating across Pakistan, San Francisco, Tokyo, Buenos Aires, Berlin.
           </p>
         </div>
       </div>
