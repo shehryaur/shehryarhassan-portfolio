@@ -7,12 +7,12 @@ import AmbientLight from "@/components/AmbientLight";
 export const metadata: Metadata = {
   title: "Shehryar Hassan - AI Product Builder",
   description:
-    "Shehryar Hassan builds AI products end to end: user research, specs, and shipped code. Minerva University, San Francisco.",
+    "Shehryar Hassan: Turning code into products people actually use. Minerva University.",
   metadataBase: new URL("https://shehryarhassan.me"),
   openGraph: {
     title: "Shehryar Hassan - AI Product Builder",
     description:
-      "AI products end to end: user research, specs, and shipped code.",
+      "Turning code into products people actually use.",
     url: "https://shehryarhassan.me",
     siteName: "shehryarhassan.me",
     type: "website",
@@ -38,7 +38,7 @@ export default function RootLayout({
         <MobileTopBar />
 
         <main className="relative z-10 flex-1 md:pl-[300px]">
-          <div className="mx-auto max-w-3xl px-6 py-10 md:px-10 md:py-14">
+          <div className="max-w-3xl px-6 py-10 md:px-12 md:py-14">
             {children}
           </div>
         </main>
