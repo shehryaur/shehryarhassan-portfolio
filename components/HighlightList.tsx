@@ -46,12 +46,12 @@ export default function HighlightList() {
             >
               <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
                 {h.image && (
-                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-line bg-surface p-1.5 flex items-center justify-center transition-colors group-hover:border-ink/20">
+                  <div className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={h.image}
                       alt={`${h.title} logo`}
-                      className="h-full w-full object-contain"
+                      className="max-h-full max-w-full object-contain rounded-md mix-blend-multiply"
                     />
                   </div>
                 )}
