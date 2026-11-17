@@ -61,7 +61,7 @@ export default function ContactPage() {
       {/* Clean editorial form */}
       <form
         onSubmit={onSubmit}
-        className="rise mt-8 max-w-2xl space-y-6 rounded-xl border border-line bg-surface p-6 sm:p-8 shadow-xs"
+        className="rise mt-8 max-w-2xl space-y-6 rounded-lg border border-line bg-surface p-6 sm:p-8 shadow-xs"
         style={{ ["--i" as string]: 2 }}
       >
         <div>
@@ -72,7 +72,7 @@ export default function ContactPage() {
             required
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="mt-2 w-full rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
+            className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
             placeholder="Your name"
           />
         </div>
@@ -86,7 +86,7 @@ export default function ContactPage() {
             name="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-2 w-full rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
+            className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
             placeholder="Your email address"
           />
         </div>
@@ -98,7 +98,7 @@ export default function ContactPage() {
             required
             value={message}
             onChange={(event) => setMessage(event.target.value)}
-            className="mt-2 h-40 w-full rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
+            className="mt-2 h-40 w-full rounded-lg border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
             placeholder="Write your message here."
           />
         </div>
@@ -106,7 +106,7 @@ export default function ContactPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-lg bg-ink px-6 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? "Sending..." : "Send message"}
         </button>
