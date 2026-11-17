@@ -12,7 +12,7 @@ import {
   Instagram,
   Star,
 } from "lucide-react";
-import { site } from "@/lib/data";
+import { site, rotationTimeline } from "@/lib/data";
 
 const nav = [
   { href: "/", label: "Home", icon: Home },
@@ -27,14 +27,6 @@ const connect = [
   { href: site.socials.linkedin, label: "LinkedIn", icon: Linkedin },
   { href: site.socials.github, label: "GitHub", icon: Github },
   { href: site.socials.instagram, label: "Instagram", icon: Instagram },
-];
-
-const timeline = [
-  { year: "2025", location: "Hasanabdal, Pakistan" },
-  { year: "2026", location: "San Francisco, USA" },
-  { year: "2027", location: "Tokyo, Japan" },
-  { year: "2028", location: "Buenos Aires, Argentina" },
-  { year: "2029", location: "Berlin – San Francisco" },
 ];
 
 export default function Sidebar() {
@@ -96,7 +88,7 @@ export default function Sidebar() {
         {/* Rotation Timeline at bottom left */}
         <div className="mt-auto pt-8">
           <div className="space-y-1.5 px-2">
-            {timeline.map((item) => (
+            {rotationTimeline.map((item) => (
               <div
                 key={item.year}
                 className="flex items-baseline gap-2.5 text-[12.5px] leading-tight"
