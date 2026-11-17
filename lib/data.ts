@@ -12,6 +12,14 @@ export const site = {
   },
 };
 
+export const rotationTimeline = [
+  { year: "2025", location: "Hasanabdal, Pakistan" },
+  { year: "2026", location: "San Francisco, USA" },
+  { year: "2027", location: "Tokyo, Japan" },
+  { year: "2028", location: "Buenos Aires, Argentina" },
+  { year: "2029", location: "Berlin – San Francisco" },
+];
+
 // -------- Projects (filterable list on /projects) --------
 export type Project = {
   slug: string;
