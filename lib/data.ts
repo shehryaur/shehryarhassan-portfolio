@@ -75,15 +75,16 @@ export const projects: Project[] = [
   },
   {
     slug: "lanes",
-    context: "2nd Place, AIE Code Summit Hackathon",
+    context: "2nd Place, AIE Code Summit",
     name: "Lanes",
     role: "Developer",
     period: "Nov 2026",
     date: "2026-11-08",
-    award: "2nd Place, AIE Code Summit Hackathon (Cerebral Valley)",
+    award: "2nd Place, AIE Code Summit",
     summary:
       "Adaptive router for coding agents that cuts token costs without thrashing prompt cache.",
     results: [
+      "2nd Place at Cerebral Valley's AIE Code Summit Hackathon.",
       "Reduced multi-turn token costs by 18% at equivalent high-thinking quality.",
       "Prevented KV cache-thrashing cost spikes up to 40%.",
     ],
