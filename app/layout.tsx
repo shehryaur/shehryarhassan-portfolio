@@ -3,7 +3,6 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import MobileTopBar from "@/components/MobileTopBar";
 import AmbientLight from "@/components/AmbientLight";
-import { rotationTimeline } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Shehryar Hassan - AI Product Builder",
@@ -41,21 +40,6 @@ export default function RootLayout({
         <main className="relative z-10 flex-1 md:pl-[300px]">
           <div className="max-w-3xl px-6 py-10 md:px-12 md:py-14">
             {children}
-
-            {/* Mobile rotation footer */}
-            <footer className="mt-16 border-t border-line/70 pt-8 pb-10 md:hidden">
-              <div className="mb-2.5 text-[11px] font-medium uppercase tracking-wider text-soft">
-                Rotation
-              </div>
-              <div className="space-y-1.5 font-mono text-[12.5px]">
-                {rotationTimeline.map((item) => (
-                  <div key={item.year} className="flex items-baseline gap-2.5">
-                    <span className="text-mute tabular-nums shrink-0">{item.year}</span>
-                    <span className="text-ink/80">{item.location}</span>
-                  </div>
-                ))}
-              </div>
-            </footer>
           </div>
         </main>
       </body>
