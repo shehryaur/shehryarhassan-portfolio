@@ -29,7 +29,7 @@ export default function HighlightList() {
     });
 
   return (
-    <ul className="divide-y divide-line border-y border-line font-mono">
+    <ul className="divide-y divide-line border-y border-line">
       {highlights.map((h, i) => {
         const expanded = open.has(h.slug);
         return (
@@ -56,7 +56,7 @@ export default function HighlightList() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <span className="block text-[17px] font-bold text-ink transition-transform duration-300 group-hover:translate-x-1">
+                  <span className="block text-[17px] font-semibold text-ink transition-transform duration-300 group-hover:translate-x-1">
                     {h.title}
                   </span>
                   <span className="mt-1 block text-[13px] text-mute">
@@ -73,7 +73,7 @@ export default function HighlightList() {
 
             {expanded && (
               <div className="pb-7 pt-1">
-                <div className="unfold rounded-lg border border-line bg-surface p-6 font-sans shadow-xs">
+                <div className="unfold rounded-lg border border-line bg-surface p-6 shadow-xs">
                   <p className="text-[14px] leading-relaxed text-ink/85">
                     {h.summary}
                   </p>
