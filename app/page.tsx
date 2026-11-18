@@ -1,5 +1,6 @@
 import EngravingPortrait from "@/components/EngravingPortrait";
 import HighlightList from "@/components/HighlightList";
+import { rotationTimeline } from "@/lib/data";
 
 export default function HomePage() {
   return (
@@ -21,6 +22,21 @@ export default function HomePage() {
       <section id="highlights" className="relative z-10 max-w-[480px] mt-24 md:mt-60 scroll-mt-10">
         <HighlightList />
       </section>
+
+      {/* Mobile rotation footer - only on homepage */}
+      <footer className="mt-20 border-t border-line/70 pt-8 pb-10 md:hidden relative z-10 max-w-[480px]">
+        <div className="mb-2.5 text-[11px] font-medium uppercase tracking-wider text-soft">
+          Rotation
+        </div>
+        <div className="space-y-1.5 font-mono text-[12.5px]">
+          {rotationTimeline.map((item) => (
+            <div key={item.year} className="flex items-baseline gap-2.5">
+              <span className="text-mute tabular-nums shrink-0">{item.year}</span>
+              <span className="text-ink/80">{item.location}</span>
+            </div>
+          ))}
+        </div>
+      </footer>
 
       {/* 
         Engraving Background:
