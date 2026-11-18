@@ -42,7 +42,7 @@ export default function HighlightList() {
             <button
               onClick={() => toggle(h.slug)}
               aria-expanded={expanded}
-              className="group flex w-full items-center justify-between gap-4 py-5 text-left"
+              className="group flex w-full items-center justify-between gap-4 py-4 text-left"
             >
               <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
                 {h.image && (
