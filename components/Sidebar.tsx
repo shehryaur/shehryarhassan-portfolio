@@ -10,14 +10,12 @@ import {
   Linkedin,
   Github,
   Instagram,
-  Star,
 } from "lucide-react";
 import { site, rotationTimeline } from "@/lib/data";
 
 const nav = [
   { href: "/", label: "Home", icon: Home },
   { href: "/projects", label: "Projects", icon: Navigation },
-  { href: "/highlights", label: "Highlights", icon: Star },
   { href: "/experience", label: "Experience", icon: BarChart3 },
   { href: "/contact", label: "Contact", icon: Mail },
 ];
