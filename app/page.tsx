@@ -5,26 +5,20 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* Hero Foreground Content */}
-      <section className="relative z-10 max-w-xl pt-2">
-        <h1 className="text-[38px] font-bold tracking-tight text-ink sm:text-[46px] leading-[1.08]">
+      <section className="relative z-10 max-w-xl">
+        <h1 className="rise text-[36px] font-bold tracking-tight text-ink sm:text-[42px] leading-tight">
           Hey, I&apos;m Shehryar
         </h1>
-
-        <div className="mt-5 space-y-4 text-[16px] leading-[1.75] text-ink/85">
-          <p>
-            Turning code into products people actually use.
-          </p>
-          <p>
-            I&apos;m an undergraduate at Minerva University studying{" "}
-            <span className="block pt-2 text-[22px] font-bold leading-tight text-ink md:text-[25px]">
-              Computational Sciences <span className="text-ink/55">and</span> Business.
-            </span>
-          </p>
-        </div>
+        <p className="rise mt-2 text-[15px] text-mute">
+          Turning code into products people actually use.
+        </p>
+        <p className="rise mt-3 text-[14.5px] leading-relaxed text-ink/80">
+          Undergraduate at Minerva University studying Computational Sciences and Business.
+        </p>
       </section>
 
       {/* Highlights Section */}
-      <section id="highlights" className="relative z-10 max-w-xl mt-24 md:mt-32 scroll-mt-10">
+      <section id="highlights" className="relative z-10 max-w-[480px] mt-28 md:mt-36 scroll-mt-10">
         <HighlightList />
       </section>
 
