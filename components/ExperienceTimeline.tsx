@@ -42,7 +42,7 @@ export default function ExperienceTimeline() {
   return (
     <ul className="divide-y divide-line border-y border-line">
       {experience.map((e, i) => {
-        const slug = e.company.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        const slug = e.slug || e.company.toLowerCase().replace(/[^a-z0-9]+/g, "-");
         const expanded = open.has(slug);
 
         return (
@@ -59,13 +59,13 @@ export default function ExperienceTimeline() {
             >
               <div className="min-w-0">
                 <span className="block text-[17px] font-semibold text-ink transition-transform duration-300 group-hover:translate-x-1">
-                  {e.role}
+                  {e.company}
                 </span>
                 <span className="mt-1 flex flex-wrap items-center gap-x-1.5 text-[13px] text-mute">
                   <span className="font-mono text-[12.5px] text-mute">
                     {e.period}
                   </span>{" "}
-                  · <span>{e.company}</span>
+                  · <span>{e.role}</span>
                 </span>
               </div>
               <ArrowRight
