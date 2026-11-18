@@ -14,7 +14,7 @@ export const highlights: HighlightItem[] = [
     slug: "adobe-ai-product-strategy",
     shortTitle: "Adobe x Minerva",
     context: "AI Product Strategist · 2025-26",
-    title: "Adobe: Adaptive Workplace AI",
+    title: "Adobe Workplace AI",
     image: "/highlight-adobe-ai.jpg",
     summary:
       "Led user discovery and authored a 33-page AI product strategy for Adobe Life PM leadership, designing a 3-layer LLM pipeline for workplace communications.",
