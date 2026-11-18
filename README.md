@@ -6,10 +6,9 @@ Personal portfolio for Shehryar Hassan, built with Next.js 14 (App Router) and T
 
 | Route | What it shows |
 | --- | --- |
-| `/` | Intro, photo with highlight polaroids, and a "catch me" robot that shares recent wins |
+| `/` | Intro, engraving backdrop, and leadership/award highlights |
 | `/projects` | Projects filterable by tech stack; the arrow opens details inline |
-| `/highlights` | Leadership, research and awards, with inline details |
-| `/experience` | Roles as a timeline of paper cards |
+| `/experience` | Roles as a timeline of cards |
 | `/contact` | Contact form (Web3Forms) |
 
 Old URLs such as `/projects/<slug>`, `/highlights/<slug>`, `/about`, `/blogs` and `/tools` redirect (see `next.config.mjs`).
