@@ -321,6 +321,7 @@ export const projects: Project[] = [
 // -------- Experience Timeline --------
 // Hybrid of the PM/FDE and SWE resumes: product, client-facing, and engineering work.
 export type Experience = {
+  slug?: string;
   period: string;
   role: string;
   company: string;
@@ -333,6 +334,7 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
+    slug: "blackmont-consulting",
     period: "Apr 2026 - Jul 2026",
     role: "Technical Solutions Intern",
     company: "Blackmont Consulting",
@@ -347,6 +349,7 @@ export const experience: Experience[] = [
     stack: ["Python", "SQL", "REST APIs", "Webhooks", "JSON"],
   },
   {
+    slug: "skill-craft-technologies",
     period: "Jan 2026 - Apr 2026",
     role: "Product Management Intern",
     company: "Skill Craft Technologies",
@@ -361,9 +364,10 @@ export const experience: Experience[] = [
     stack: ["PRDs", "Jira", "Python", "Postman", "SQL", "Mixpanel"],
   },
   {
+    slug: "adobe",
     period: "Sep 2025 - May 2026",
     role: "AI Product Strategist",
-    company: "Adobe",
+    company: "Adobe (University-Industry Partnership)",
     about: "Year-long Minerva University partnership",
     location: "San Francisco, CA",
     highlights: [
