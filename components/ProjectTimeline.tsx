@@ -45,37 +45,35 @@ export default function ProjectTimeline() {
     // md:-mb-14 cancels <main>'s bottom padding so this grid reaches the page
     // bottom; otherwise the sticky filter gets pushed up at full scroll.
     <div className="grid gap-6 md:gap-8 md:-mb-14 md:grid-cols-[1fr_170px]">
-      {/* ---------- Mobile filter trigger & expandable panel ---------- */}
+      {/* ---------- Mobile filter trigger: clean funnel icon on the right ---------- */}
       <div className="md:hidden">
-        <div className="flex items-center justify-between gap-3">
-          <button
-            onClick={() => setMobileFilterOpen((v) => !v)}
-            aria-expanded={mobileFilterOpen}
-            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[13px] font-medium transition ${
-              mobileFilterOpen || selected.size > 0
-                ? "border-ink bg-ink text-white shadow-xs"
-                : "border-line bg-surface text-ink hover:bg-subtle"
-            }`}
-          >
-            <Filter size={13.5} />
-            <span>Filter Tech Stack</span>
-            {selected.size > 0 && (
-              <span className={`rounded-full px-1.5 py-0.2 font-mono text-[11px] leading-none ${
-                mobileFilterOpen || selected.size > 0 ? "bg-white/25 text-white" : "bg-ink text-white"
-              }`}>
-                {selected.size}
-              </span>
-            )}
-          </button>
-
+        <div className="flex items-center justify-end gap-3 pb-1">
           {selected.size > 0 && (
             <button
               onClick={() => setSelected(new Set())}
-              className="text-[12px] text-mute underline underline-offset-2 hover:text-ink"
+              className="mr-auto text-[12px] text-mute underline underline-offset-2 hover:text-ink"
             >
               Clear filters ({selected.size})
             </button>
           )}
+
+          <button
+            onClick={() => setMobileFilterOpen((v) => !v)}
+            aria-label="Filter by tech stack"
+            aria-expanded={mobileFilterOpen}
+            className={`relative rounded-md p-2 transition-colors ${
+              mobileFilterOpen || selected.size > 0
+                ? "bg-subtle text-ink"
+                : "text-mute hover:bg-subtle hover:text-ink"
+            }`}
+          >
+            <Filter size={18} strokeWidth={2} />
+            {selected.size > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-ink px-1 font-mono text-[10px] font-bold text-white">
+                {selected.size}
+              </span>
+            )}
+          </button>
         </div>
 
         {mobileFilterOpen && (
