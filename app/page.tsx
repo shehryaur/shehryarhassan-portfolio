@@ -26,8 +26,9 @@ export default function HomePage() {
         Engraving Background:
         Anchored to bottom-right, spreading wide like a mountain silhouette from the base
         up to the point on the right, integrated as a seamless backdrop rather than a card.
+        On mobile, rendered as a subtle background behind the content instead of at the bottom.
       */}
-      <div className="pointer-events-none z-0 overflow-hidden md:fixed md:right-0 md:bottom-0 md:top-0 md:w-[44vw] md:max-w-[700px] lg:w-[40vw] xl:w-[38vw] flex items-end justify-end max-md:relative max-md:mt-12 max-md:w-full max-md:h-[360px]">
+      <div className="pointer-events-none z-0 overflow-hidden fixed right-0 bottom-0 top-0 w-full md:w-[44vw] md:max-w-[700px] lg:w-[40vw] xl:w-[38vw] flex items-end justify-end max-md:opacity-40">
         <EngravingPortrait
           className="h-full w-full"
           offsetX={0.34}
