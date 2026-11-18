@@ -24,7 +24,7 @@ export default function HomePage() {
       </section>
 
       {/* Highlights Section */}
-      <section id="highlights" className="relative z-10 mt-14 md:mt-20 scroll-mt-10">
+      <section id="highlights" className="relative z-10 max-w-xl mt-24 md:mt-32 scroll-mt-10">
         <HighlightList />
       </section>
 
