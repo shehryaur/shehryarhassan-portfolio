@@ -30,7 +30,7 @@ const robotLines: Record<string, string> = {
 
 const pins: Pin[] = highlights.map((h) => ({
   key: h.slug,
-  href: `/highlights#${h.slug}`,
+  href: `/#${h.slug}`,
   image: h.image,
   alt: h.title,
   caption: h.shortTitle,
