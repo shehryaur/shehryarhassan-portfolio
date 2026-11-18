@@ -5,7 +5,7 @@ export const site = {
   avatar: "/avatar.webp",
 
   socials: {
-    linkedin: "https://linkedin.com/in/shehryar-hassan",
+    linkedin: "https://www.linkedin.com/in/shehryar05/",
     github: "https://github.com/shehryaur",
     instagram: "https://instagram.com/shehryaur",
     email: "mailto:contact@shehryarhassan.me",
