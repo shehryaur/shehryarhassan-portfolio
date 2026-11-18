@@ -183,13 +183,12 @@ input[type='text'], input[type='email'], textarea { cursor: text; }
   animation-delay: calc(var(--i, 0) * 60ms);
 }
 
-/* Opened details unfold gently */
+/* Opened details unfold gently with clean, straight alignment */
 @keyframes unfold {
-  from { opacity: 0; transform: translateY(-6px) rotate(var(--tilt, -0.6deg)); }
-  to   { opacity: 1; transform: rotate(var(--tilt, -0.6deg)); }
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-/* "backwards" so the hover straighten still works once the unfold has finished */
-.unfold { animation: unfold .35s cubic-bezier(.2, .7, .2, 1) backwards; }
+.unfold { animation: unfold .3s cubic-bezier(.2, .7, .2, 1) both; }
 
 @media (prefers-reduced-motion: reduce) {
   .rise, .unfold { animation: none; }
