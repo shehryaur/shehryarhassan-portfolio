@@ -102,7 +102,7 @@ export default function ProjectTimeline() {
       {/* ---------- Project list ---------- */}
       <div className="order-2 md:order-1 md:pb-14">
         {visible.length === 0 ? (
-          <div className="rounded-lg border border-line bg-surface p-8 text-center font-mono shadow-xs">
+          <div className="rounded-lg border border-line bg-surface p-8 text-center shadow-xs">
             <p className="text-[14px] text-mute">
               No projects match all selected filters.
             </p>
@@ -114,7 +114,7 @@ export default function ProjectTimeline() {
             </button>
           </div>
         ) : (
-          <ul className="divide-y divide-line border-y border-line font-mono">
+          <ul className="divide-y divide-line border-y border-line">
           {visible.map((p, i) => {
             const expanded = open.has(p.slug);
             return (
@@ -130,14 +130,14 @@ export default function ProjectTimeline() {
                   className="group flex w-full items-center justify-between gap-4 py-5 text-left"
                 >
                   <span className="min-w-0">
-                    <span className="block text-[17px] font-bold text-ink transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="block text-[17px] font-semibold text-ink transition-transform duration-300 group-hover:translate-x-1">
                       {p.name}
                     </span>
                     <span className="mt-1 flex flex-wrap items-center gap-x-1.5 text-[13px] text-mute">
-                      {p.period} ·
+                      <span className="font-mono text-[12.5px] text-mute">{p.period}</span> ·
                       {p.award ? (
                         // Awards stand out from plain context lines.
-                        <span className="inline-flex items-center gap-1 font-bold text-amber-700">
+                        <span className="inline-flex items-center gap-1 font-semibold text-amber-700">
                           <Trophy size={13} strokeWidth={2.25} />
                           {p.award}
                         </span>
@@ -155,7 +155,7 @@ export default function ProjectTimeline() {
 
                 {expanded && (
                   <div className="pb-7 pt-1">
-                    <div className="unfold rounded-lg border border-line bg-surface p-6 font-sans shadow-xs">
+                    <div className="unfold rounded-lg border border-line bg-surface p-6 shadow-xs">
                       <p className="text-[12.5px] text-mute">
                         My role: {p.role}
                       </p>
