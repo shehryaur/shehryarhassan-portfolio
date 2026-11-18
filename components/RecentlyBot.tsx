@@ -26,9 +26,8 @@ const NAP_AFTER_MS = 8000;
 
 /** Tips it gives when you hover the sidebar links. */
 const navTips: Record<string, string> = {
-  "/": "You're already home!",
-  "/projects": "Try the Go filter on Projects!",
-  "/highlights": "Adobe strategy, a non-profit, a paper, a gold medal.",
+  "/": "You're already home! Highlights are right below.",
+  "/projects": "Check out Vexl, Lanes, and all the projects!",
   "/experience": "Adobe, Blackmont, Skill Craft. Busy guy!",
   "/contact": "He reads every note. Say hi!",
 };
