@@ -18,7 +18,7 @@ export default function HomePage() {
       </section>
 
       {/* Highlights Section */}
-      <section id="highlights" className="relative z-10 max-w-[480px] mt-28 md:mt-36 scroll-mt-10">
+      <section id="highlights" className="relative z-10 max-w-[480px] mt-24 md:mt-60 scroll-mt-10">
         <HighlightList />
       </section>
 
